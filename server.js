@@ -122,6 +122,21 @@ io.on('connection', (socket) => {
     broadcastHostState();
   });
 
+  socket.on('host:reset-game', () => {
+    teams.clear();
+    disconnected.clear();
+    currentQuestion = null;
+    questionCount = 0;
+    questionHistory.length = 0;
+    revealedAnswers.clear();
+    highlightedTeam = null;
+    displayMode = 'leaderboard';
+    io.emit('game:reset');
+    broadcastHighlight();
+    broadcastLeaderboard();
+    broadcastHostState();
+  });
+
   socket.on('host:set-display', ({ mode }) => {
     displayMode = mode;
     io.emit('display:mode', mode);

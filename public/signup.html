@@ -513,6 +513,14 @@
     socket.on('disconnect', () => document.getElementById('connBar').classList.add('show'));
     socket.on('connect',    () => document.getElementById('connBar').classList.remove('show'));
 
+    socket.on('game:reset', () => {
+      myName = ''; inGame = false;
+      document.getElementById('teamBanner').classList.remove('show');
+      document.getElementById('nameInput').value = '';
+      document.getElementById('joinErr').textContent = '';
+      show('signup');
+    });
+
     function showQuestion(q) {
       currentQuestionType = q.type || 'text';
       document.getElementById('qNum').textContent = `Question ${q.number}`;

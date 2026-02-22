@@ -37,6 +37,26 @@
       background-size: 60px 60px;
       border-bottom: 3px solid #1a2c2f;
     }
+    .reset-btn {
+      position: absolute;
+      top: 16px;
+      right: 20px;
+      padding: 7px 14px;
+      background: transparent;
+      border: 2px solid rgba(26,44,47,0.5);
+      border-radius: 3px;
+      color: #2a3c3f;
+      font-family: 'Brother 1816 Printed', 'Anton', sans-serif;
+      font-size: 0.68rem;
+      font-weight: bold;
+      cursor: pointer;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      opacity: 0.6;
+      transition: opacity 0.15s, border-color 0.15s;
+    }
+    .reset-btn:hover { opacity: 1; border-color: #1a2c2f; }
+
     header h1 {
       font-family: 'Hello Imperfect', 'Anton', sans-serif;
       font-size: 3.2rem;
@@ -388,9 +408,10 @@
   </style>
 </head>
 <body>
-  <header>
+  <header style="position:relative">
     <h1>Slow Body</h1>
     <div class="header-sub">Anti-Trivia · Host Dashboard</div>
+    <button class="reset-btn" onclick="resetGame()">↺ New Game</button>
   </header>
 
   <div class="grid">
@@ -460,6 +481,11 @@
 
     socket.on('connect', () => socket.emit('host:join'));
     socket.on('host:state', s => { state = s; render(); });
+
+    function resetGame() {
+      if (!confirm('Start a new game? This will remove all teams and reset everything.')) return;
+      socket.emit('host:reset-game');
+    }
 
     function setQType(type) {
       questionType = type;
