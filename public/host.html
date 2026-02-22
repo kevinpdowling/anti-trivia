@@ -1,0 +1,598 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Anti-Trivia — Host</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Anton&family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    @font-face {
+      font-family: 'Hello Imperfect';
+      src: url('/fonts/HelloImperfect.otf') format('opentype');
+      font-weight: normal;
+    }
+    @font-face {
+      font-family: 'Brother 1816 Printed';
+      src: url('/fonts/Brother1816Printed-Bold.ttf') format('truetype');
+      font-weight: bold;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      background: #c07840;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.06'/%3E%3C/svg%3E");
+      color: #f0ece8;
+      font-family: 'Poppins', 'Segoe UI', sans-serif;
+      min-height: 100vh;
+      padding: 20px;
+    }
+
+    /* ── Header ── */
+    header {
+      text-align: center;
+      margin-bottom: 24px;
+      padding: 28px 20px 24px;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='60' height='60'%3E%3Cpath d='M30 8 C24 8 20 12 20 17 L20 22 C20 26 24 28 24 30 C24 32 20 34 20 38 L20 43 C20 48 24 52 30 52 C36 52 40 48 40 43 L40 38 C40 34 36 32 36 30 C36 28 40 26 40 22 L40 17 C40 12 36 8 30 8Z' fill='%23a06030' opacity='0.25'/%3E%3C/svg%3E");
+      background-size: 60px 60px;
+      border-bottom: 3px solid #1a2c2f;
+    }
+    header h1 {
+      font-family: 'Hello Imperfect', 'Anton', sans-serif;
+      font-size: 3.2rem;
+      color: #2a3c3f;
+      text-shadow:
+        1px 1px 0 #e8c87a,
+        3px 3px 0 #1a2c2f,
+        4px 4px 0 #1a2c2f;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      line-height: 1;
+    }
+    .header-sub {
+      display: inline-block;
+      font-family: 'Brother 1816 Printed', 'Anton', sans-serif;
+      font-size: 0.72rem;
+      color: #f0ece8;
+      background: #2a3c3f;
+      padding: 3px 14px;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      margin-top: 8px;
+      box-shadow: 3px 3px 0 #1a2c2f;
+    }
+
+    /* ── Layout ── */
+    .grid {
+      display: grid;
+      grid-template-columns: 340px 1fr;
+      gap: 20px;
+      align-items: start;
+    }
+
+    /* ── Panels ── */
+    .panel {
+      background: #2a3c3f;
+      border: 1px solid #1a2c2f;
+      border-radius: 4px;
+      padding: 18px 20px;
+      margin-bottom: 14px;
+      box-shadow: 4px 4px 0 #1a2c2f;
+    }
+    .panel-title {
+      font-family: 'Brother 1816 Printed', 'Anton', sans-serif;
+      font-size: 0.7rem;
+      color: #cc8085;
+      text-transform: uppercase;
+      letter-spacing: 0.28em;
+      margin-bottom: 14px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid #1a2c2f;
+    }
+
+    /* ── Question type toggle ── */
+    .type-toggle { display: flex; gap: 8px; margin-bottom: 12px; }
+    .type-btn {
+      flex: 1;
+      padding: 8px;
+      border: 2px solid #1a2c2f;
+      border-radius: 3px;
+      background: #1a2c2f;
+      color: #5a7070;
+      font-family: 'Brother 1816 Printed', 'Anton', sans-serif;
+      font-size: 0.78rem;
+      cursor: pointer;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      transition: all 0.12s;
+    }
+    .type-btn.active {
+      background: #cc8085;
+      color: #fff;
+      border-color: #1a2c2f;
+      box-shadow: 3px 3px 0 #1a2c2f;
+    }
+
+    textarea {
+      width: 100%;
+      background: #1a2c2f;
+      border: 2px solid #0f1e20;
+      border-radius: 3px;
+      color: #f0ece8;
+      font-family: 'Poppins', sans-serif;
+      font-size: 0.95rem;
+      padding: 10px 12px;
+      resize: vertical;
+      min-height: 72px;
+      margin-bottom: 10px;
+    }
+    textarea:focus { outline: none; border-color: #cc8085; }
+    textarea::placeholder { color: #3a5558; }
+
+    /* ── Buttons ── */
+    .btn-row { display: flex; gap: 8px; }
+    button {
+      padding: 9px 16px;
+      border: none;
+      border-radius: 3px;
+      font-family: 'Brother 1816 Printed', 'Anton', sans-serif;
+      font-size: 0.8rem;
+      font-weight: bold;
+      cursor: pointer;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      transition: box-shadow 0.08s, transform 0.08s;
+    }
+    button:active { transform: translate(2px, 2px); }
+
+    .btn-primary {
+      background: #cc8085;
+      color: #fff;
+      flex: 1;
+      box-shadow: 4px 4px 0 #1a2c2f;
+    }
+    .btn-primary:active { box-shadow: 2px 2px 0 #1a2c2f; }
+
+    .btn-ghost {
+      background: transparent;
+      border: 2px solid #1a2c2f;
+      color: #5a7070;
+      box-shadow: 3px 3px 0 #1a2c2f;
+    }
+    .btn-ghost:hover { color: #f0ece8; border-color: #cc8085; }
+    .btn-ghost:active { box-shadow: 1px 1px 0 #1a2c2f; }
+
+    .btn-danger {
+      background: rgba(204,128,133,0.15);
+      color: #cc8085;
+      border: 2px solid rgba(204,128,133,0.35);
+      box-shadow: 3px 3px 0 #1a2c2f;
+    }
+    .btn-danger:hover { background: rgba(204,128,133,0.25); }
+    .btn-danger:active { box-shadow: 1px 1px 0 #1a2c2f; }
+
+    .btn-small { padding: 5px 10px; font-size: 0.7rem; }
+    .btn-icon { padding: 5px 10px; font-size: 0.9rem; min-width: 34px; text-align: center; }
+
+    /* ── Display mode toggle ── */
+    .display-toggle { display: flex; gap: 8px; }
+    .display-btn {
+      flex: 1;
+      padding: 10px;
+      border: 2px solid #1a2c2f;
+      border-radius: 3px;
+      background: #1a2c2f;
+      color: #5a7070;
+      font-family: 'Brother 1816 Printed', 'Anton', sans-serif;
+      font-size: 0.82rem;
+      cursor: pointer;
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      transition: all 0.12s;
+    }
+    .display-btn.active {
+      background: #cc8085;
+      color: #fff;
+      border-color: #1a2c2f;
+      box-shadow: 3px 3px 0 #1a2c2f;
+    }
+
+    /* ── Active question ── */
+    .current-q {
+      background: rgba(204,128,133,0.1);
+      border: 2px solid rgba(204,128,133,0.3);
+      border-radius: 3px;
+      padding: 12px 14px;
+      font-size: 0.92rem;
+      font-weight: 600;
+      color: #f0ece8;
+      line-height: 1.45;
+      display: none;
+    }
+    .current-q.show { display: block; }
+    .q-label {
+      font-family: 'Brother 1816 Printed', 'Anton', sans-serif;
+      font-size: 0.65rem;
+      color: #cc8085;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      margin-bottom: 5px;
+    }
+    .no-q-msg {
+      font-family: 'Brother 1816 Printed', 'Anton', sans-serif;
+      color: #1a2c2f;
+      font-size: 0.85rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+
+    /* ── History ── */
+    .history-list {
+      max-height: 200px;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .history-item {
+      padding: 8px 12px;
+      background: #1a2c2f;
+      border-radius: 3px;
+      border-left: 3px solid #0f1e20;
+      font-size: 0.82rem;
+      color: #7a9090;
+      line-height: 1.4;
+    }
+    .history-item .h-num {
+      font-family: 'Brother 1816 Printed', 'Anton', sans-serif;
+      font-size: 0.65rem;
+      color: #cc8085;
+      display: block;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      margin-bottom: 2px;
+    }
+    .no-history {
+      font-family: 'Brother 1816 Printed', 'Anton', sans-serif;
+      color: #1a2c2f;
+      font-size: 0.8rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+
+    /* ── Teams grid ── */
+    .teams-header { display: flex; align-items: center; margin-bottom: 14px; }
+    .team-count {
+      font-family: 'Brother 1816 Printed', 'Anton', sans-serif;
+      font-size: 0.72rem;
+      color: #2a3c3f;
+      text-transform: uppercase;
+      letter-spacing: 0.2em;
+    }
+
+    .teams-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 14px;
+    }
+
+    .team-card {
+      background: #2a3c3f;
+      border: 1px solid #1a2c2f;
+      border-radius: 4px;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      box-shadow: 4px 4px 0 #1a2c2f;
+    }
+
+    .team-card-top {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 8px;
+    }
+    .team-name-display {
+      font-family: 'Anton', sans-serif;
+      font-size: 1.2rem;
+      color: #f0ece8;
+      letter-spacing: 0.04em;
+      line-height: 1.2;
+      word-break: break-word;
+    }
+
+    .score-controls { display: flex; align-items: center; gap: 4px; flex-shrink: 0; }
+    .score-display {
+      font-family: 'Anton', sans-serif;
+      font-size: 1.8rem;
+      color: #c49a35;
+      min-width: 46px;
+      text-align: center;
+      line-height: 1;
+    }
+
+    .set-score-row { display: flex; gap: 6px; }
+    .set-score-input {
+      flex: 1;
+      background: #1a2c2f;
+      border: 2px solid #0f1e20;
+      border-radius: 3px;
+      color: #f0ece8;
+      font-family: 'Poppins', sans-serif;
+      font-size: 0.85rem;
+      padding: 5px 8px;
+    }
+    .set-score-input:focus { outline: none; border-color: #cc8085; }
+    .set-score-input::placeholder { color: #3a5558; }
+
+    .answer-label {
+      font-family: 'Brother 1816 Printed', 'Anton', sans-serif;
+      font-size: 0.65rem;
+      color: #cc8085;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      margin-bottom: 4px;
+    }
+    .answer-preview {
+      background: #1a2c2f;
+      border: 1px solid #0f1e20;
+      border-radius: 3px;
+      padding: 8px 10px;
+      font-size: 0.85rem;
+      color: #3a5558;
+      font-style: italic;
+      word-break: break-word;
+      line-height: 1.4;
+    }
+    .answer-preview.has-answer { color: #f0ece8; font-style: normal; }
+    .answer-preview img {
+      max-width: 100%;
+      max-height: 140px;
+      border-radius: 3px;
+      display: block;
+    }
+
+    .card-actions { display: flex; gap: 6px; flex-wrap: wrap; align-items: center; }
+
+    .btn-reveal {
+      background: rgba(196,154,53,0.12);
+      color: #c49a35;
+      border: 2px solid rgba(196,154,53,0.3);
+      box-shadow: 3px 3px 0 #1a2c2f;
+    }
+    .btn-reveal:hover { background: rgba(196,154,53,0.22); }
+    .btn-reveal.active { background: #c49a35; color: #1a2c2f; border-color: #1a2c2f; }
+    .btn-reveal:active { box-shadow: 1px 1px 0 #1a2c2f; }
+
+    .btn-highlight {
+      background: rgba(204,128,133,0.1);
+      color: #cc8085;
+      border: 2px solid rgba(204,128,133,0.28);
+      box-shadow: 3px 3px 0 #1a2c2f;
+    }
+    .btn-highlight:hover { background: rgba(204,128,133,0.2); }
+    .btn-highlight.active { background: #cc8085; color: #fff; border-color: #1a2c2f; }
+    .btn-highlight:active { box-shadow: 1px 1px 0 #1a2c2f; }
+
+    .empty-teams {
+      color: #3a5558;
+      font-family: 'Brother 1816 Printed', 'Anton', sans-serif;
+      font-size: 1rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 30px;
+      text-align: center;
+      grid-column: 1 / -1;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Slow Body</h1>
+    <div class="header-sub">Anti-Trivia · Host Dashboard</div>
+  </header>
+
+  <div class="grid">
+    <!-- Left sidebar -->
+    <div>
+      <div class="panel">
+        <div class="panel-title">Push Question</div>
+        <div class="type-toggle">
+          <button class="type-btn active" id="typeBtnText" onclick="setQType('text')">Text</button>
+          <button class="type-btn" id="typeBtnDrawing" onclick="setQType('drawing')">Drawing</button>
+        </div>
+        <textarea id="qInput" placeholder="Enter question…"></textarea>
+        <div class="btn-row">
+          <button class="btn-primary" onclick="pushQ()">Push Question</button>
+          <button class="btn-ghost" onclick="clearQ()">Clear</button>
+        </div>
+      </div>
+
+      <div class="panel">
+        <div class="panel-title">Active Question</div>
+        <div class="current-q" id="currentQ">
+          <div class="q-label" id="qNumLabel"></div>
+          <div id="qTextDisplay"></div>
+        </div>
+        <div class="no-q-msg" id="noQMsg">No Active Question</div>
+      </div>
+
+      <div class="panel">
+        <div class="panel-title">Big Screen Display</div>
+        <div class="display-toggle">
+          <button class="display-btn active" id="dispLeaderboard" onclick="setDisplay('leaderboard')">Leaderboard</button>
+          <button class="display-btn" id="dispAnswers" onclick="setDisplay('answers')">Answers</button>
+        </div>
+      </div>
+
+      <div class="panel">
+        <div class="panel-title">Question History</div>
+        <div class="history-list" id="historyList">
+          <div class="no-history">No Questions Yet</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Teams -->
+    <div>
+      <div class="teams-header">
+        <div class="team-count" id="teamCount">0 Teams</div>
+      </div>
+      <div class="teams-grid" id="teamsGrid">
+        <div class="empty-teams">Waiting for teams to join…</div>
+      </div>
+    </div>
+  </div>
+
+  <script src="/socket.io/socket.io.js"></script>
+  <script>
+    const socket = io();
+    let state = {
+      teams: [],
+      question: null,
+      questionHistory: [],
+      displayMode: 'leaderboard',
+      revealedAnswers: [],
+      highlightedTeamName: null,
+    };
+    let questionType = 'text';
+
+    socket.on('connect', () => socket.emit('host:join'));
+    socket.on('host:state', s => { state = s; render(); });
+
+    function setQType(type) {
+      questionType = type;
+      document.getElementById('typeBtnText').classList.toggle('active', type === 'text');
+      document.getElementById('typeBtnDrawing').classList.toggle('active', type === 'drawing');
+    }
+
+    function pushQ() {
+      const text = document.getElementById('qInput').value.trim();
+      if (!text) return;
+      socket.emit('host:push-question', { text, type: questionType });
+      document.getElementById('qInput').value = '';
+    }
+
+    document.getElementById('qInput').addEventListener('keydown', e => {
+      if (e.key === 'Enter' && (e.ctrlKey || e.metaKey)) pushQ();
+    });
+
+    function clearQ() { socket.emit('host:clear-question'); }
+    function award(teamId, delta) { socket.emit('host:award-points', { teamId, delta }); }
+    function setScore(teamId, inputEl) {
+      const score = parseInt(inputEl.value);
+      if (isNaN(score)) return;
+      socket.emit('host:set-score', { teamId, score });
+      inputEl.value = '';
+    }
+    function removeTeam(teamId) {
+      if (!confirm('Remove this team?')) return;
+      socket.emit('host:remove-team', { teamId });
+    }
+    function setDisplay(mode) { socket.emit('host:set-display', { mode }); }
+    function toggleReveal(teamName) { socket.emit('host:reveal-answer', { teamName }); }
+    function toggleHighlight(teamName) { socket.emit('host:highlight-team', { teamName }); }
+
+    function esc(s) {
+      return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+    }
+
+    function render() {
+      const q = state.question;
+      const currentQ = document.getElementById('currentQ');
+      const noQMsg = document.getElementById('noQMsg');
+      if (q) {
+        document.getElementById('qNumLabel').textContent = `Question ${q.number} · ${(q.type || 'text').toUpperCase()}`;
+        document.getElementById('qTextDisplay').textContent = q.text;
+        currentQ.classList.add('show');
+        noQMsg.style.display = 'none';
+      } else {
+        currentQ.classList.remove('show');
+        noQMsg.style.display = '';
+      }
+
+      document.getElementById('dispLeaderboard').classList.toggle('active', state.displayMode === 'leaderboard');
+      document.getElementById('dispAnswers').classList.toggle('active', state.displayMode === 'answers');
+
+      const histEl = document.getElementById('historyList');
+      if (state.questionHistory && state.questionHistory.length) {
+        histEl.innerHTML = [...state.questionHistory].reverse().map(hq =>
+          `<div class="history-item">
+            <span class="h-num">Q${hq.number} · ${(hq.type || 'text').toUpperCase()}</span>
+            ${esc(hq.text)}
+          </div>`
+        ).join('');
+      } else {
+        histEl.innerHTML = '<div class="no-history">No Questions Yet</div>';
+      }
+
+      const teams = state.teams || [];
+      document.getElementById('teamCount').textContent =
+        `${teams.length} Team${teams.length !== 1 ? 's' : ''}`;
+
+      const grid = document.getElementById('teamsGrid');
+      if (!teams.length) {
+        grid.innerHTML = '<div class="empty-teams">Waiting for teams to join…</div>';
+        return;
+      }
+
+      const revealedSet = new Set(state.revealedAnswers || []);
+      const highlightedName = state.highlightedTeamName;
+
+      grid.innerHTML = teams.map(t => {
+        const hasAnswer = t.answer !== null && t.answer !== undefined && t.answer !== '';
+        const isImg = hasAnswer && typeof t.answer === 'string' && t.answer.startsWith('data:image');
+        const isRevealed = revealedSet.has(t.name);
+        const isHighlighted = highlightedName === t.name;
+
+        let answerContent;
+        if (!hasAnswer) {
+          answerContent = `<div class="answer-preview">no answer yet…</div>`;
+        } else if (isImg) {
+          answerContent = `
+            <div class="answer-label">Drawing</div>
+            <div class="answer-preview has-answer"><img src="${t.answer}" alt="drawing" /></div>`;
+        } else {
+          answerContent = `
+            <div class="answer-label">Answer</div>
+            <div class="answer-preview has-answer">${esc(t.answer)}</div>`;
+        }
+
+        const safeId = esc(t.id);
+        const safeName = esc(t.name);
+
+        const revealBtn = (hasAnswer && !isImg)
+          ? `<button class="btn-small btn-reveal ${isRevealed ? 'active' : ''}" data-name="${safeName}" onclick="toggleReveal(this.dataset.name)">${isRevealed ? 'Hide' : 'Reveal'}</button>`
+          : '';
+        const highlightBtn = (hasAnswer && isImg)
+          ? `<button class="btn-small btn-highlight ${isHighlighted ? 'active' : ''}" data-name="${safeName}" onclick="toggleHighlight(this.dataset.name)">${isHighlighted ? 'Unhighlight' : 'Highlight'}</button>`
+          : '';
+
+        return `
+          <div class="team-card">
+            <div class="team-card-top">
+              <div class="team-name-display">${esc(t.name)}</div>
+              <div class="score-controls">
+                <button class="btn-icon btn-ghost" onclick="award('${safeId}', -1)">−</button>
+                <div class="score-display">${t.score}</div>
+                <button class="btn-icon btn-ghost" onclick="award('${safeId}', 1)">+</button>
+              </div>
+            </div>
+            <div class="set-score-row">
+              <input class="set-score-input" type="number" placeholder="Set score…" id="si_${safeId}"
+                onkeydown="if(event.key==='Enter') setScore('${safeId}', this)" />
+              <button class="btn-small btn-ghost" onclick="setScore('${safeId}', document.getElementById('si_${safeId}'))">Set</button>
+            </div>
+            ${answerContent}
+            <div class="card-actions">
+              ${revealBtn}
+              ${highlightBtn}
+              <button class="btn-small btn-danger" style="margin-left:auto" onclick="removeTeam('${safeId}')">Remove</button>
+            </div>
+          </div>`;
+      }).join('');
+    }
+  </script>
+</body>
+</html>

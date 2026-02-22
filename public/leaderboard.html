@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Anti-Trivia Leaderboard</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Anton&family=Poppins:wght@400;600;700;900&display=swap" rel="stylesheet">
+  <style>
+    @font-face {
+      font-family: 'Hello Imperfect';
+      src: url('/fonts/HelloImperfect.otf') format('opentype');
+      font-weight: normal;
+    }
+    @font-face {
+      font-family: 'Brother 1816 Printed';
+      src: url('/fonts/Brother1816Printed-Bold.ttf') format('truetype');
+      font-weight: bold;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      background: #c07840;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.06'/%3E%3C/svg%3E");
+      color: #f0ece8;
+      font-family: 'Poppins', 'Segoe UI', sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    header {
+      text-align: center;
+      padding: 32px 20px 20px;
+      position: relative;
+      z-index: 1;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='60' height='60'%3E%3Cpath d='M30 8 C24 8 20 12 20 17 L20 22 C20 26 24 28 24 30 C24 32 20 34 20 38 L20 43 C20 48 24 52 30 52 C36 52 40 48 40 43 L40 38 C40 34 36 32 36 30 C36 28 40 26 40 22 L40 17 C40 12 36 8 30 8Z' fill='%23a06030' opacity='0.25'/%3E%3C/svg%3E");
+      background-size: 60px 60px;
+      border-bottom: 3px solid #1a2c2f;
+      padding-bottom: 24px;
+    }
+    header h1 {
+      font-family: 'Hello Imperfect', 'Anton', sans-serif;
+      font-size: 6rem;
+      color: #2a3c3f;
+      text-shadow:
+        1px 1px 0 #e8c87a,
+        3px 3px 0 #1a2c2f,
+        5px 5px 0 #1a2c2f,
+        7px 7px 0 #1a2c2f;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      line-height: 1;
+    }
+    .header-sub {
+      display: inline-block;
+      font-family: 'Brother 1816 Printed', 'Anton', sans-serif;
+      font-size: 0.85rem;
+      color: #f0ece8;
+      background: #2a3c3f;
+      padding: 4px 16px;
+      letter-spacing: 0.35em;
+      text-transform: uppercase;
+      margin-top: 10px;
+      box-shadow: 4px 4px 0 #1a2c2f;
+    }
+    .header-divider {
+      width: 140px;
+      height: 3px;
+      background: linear-gradient(to right, transparent, #2a3c3f, transparent);
+      margin: 16px auto 0;
+    }
+
+    .q-banner {
+      margin: 14px 60px 6px;
+      padding: 14px 28px;
+      background: #2a3c3f;
+      border: 1px solid #1a2c2f;
+      border-left: 5px solid #cc8085;
+      border-radius: 0 3px 3px 0;
+      text-align: center;
+      display: none;
+      animation: fadeIn 0.4s ease;
+      position: relative;
+      z-index: 1;
+      box-shadow: 4px 4px 0 #1a2c2f;
+    }
+    .q-banner.show { display: block; }
+    .q-banner .label {
+      font-family: 'Brother 1816 Printed', 'Anton', sans-serif;
+      font-size: 0.78rem;
+      color: #cc8085;
+      text-transform: uppercase;
+      letter-spacing: 0.22em;
+      margin-bottom: 6px;
+    }
+    .q-banner .text { font-size: 1.3rem; font-weight: 600; color: #f0ece8; line-height: 1.4; }
+
+    .board {
+      flex: 1;
+      padding: 16px 60px 30px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      overflow: hidden;
+      position: relative;
+      z-index: 1;
+    }
+
+    .row {
+      display: flex;
+      align-items: center;
+      padding: 18px 28px;
+      background: #2a3c3f;
+      border-radius: 3px;
+      border-left: 6px solid #1a2c2f;
+      animation: slideIn 0.4s ease;
+      box-shadow: 4px 4px 0 #1a2c2f;
+    }
+    @keyframes slideIn {
+      from { opacity: 0; transform: translateX(-24px); }
+      to   { opacity: 1; transform: translateX(0); }
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; } to { opacity: 1; }
+    }
+
+    .row.gold   { border-left-color: #c9a227; background: linear-gradient(to right, rgba(201,162,39,0.18), #2a3c3f); }
+    .row.silver { border-left-color: #aaaaaa; background: linear-gradient(to right, rgba(170,170,170,0.1), #2a3c3f); }
+    .row.bronze { border-left-color: #cc6622; background: linear-gradient(to right, rgba(204,102,34,0.1), #2a3c3f); }
+
+    .rank {
+      font-family: 'Anton', sans-serif;
+      font-size: 2.2rem;
+      width: 80px;
+      text-align: center;
+      flex-shrink: 0;
+      color: #3a5558;
+      letter-spacing: 0.05em;
+    }
+    .gold   .rank { color: #c9a227; text-shadow: 0 0 20px rgba(201,162,39,0.5); }
+    .silver .rank { color: #aaaaaa; }
+    .bronze .rank { color: #cc6622; }
+
+    .name {
+      flex: 1;
+      font-family: 'Anton', sans-serif;
+      font-size: 2.1rem;
+      letter-spacing: 0.04em;
+      padding: 0 24px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      color: #f0ece8;
+    }
+
+    .score-wrap { text-align: right; flex-shrink: 0; }
+    .score {
+      font-family: 'Anton', sans-serif;
+      font-size: 2.8rem;
+      color: #c49a35;
+      line-height: 1;
+      letter-spacing: 0.05em;
+    }
+    .pts-label {
+      font-family: 'Brother 1816 Printed', 'Anton', sans-serif;
+      font-size: 0.7rem;
+      font-weight: bold;
+      color: #cc8085;
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+    }
+
+    .empty {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Brother 1816 Printed', 'Anton', sans-serif;
+      color: #a06030;
+      font-size: 1.5rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+
+    /* Answers view */
+    .answers-board {
+      flex: 1;
+      padding: 16px 60px 30px;
+      display: none;
+      flex-direction: column;
+      gap: 10px;
+      overflow: hidden;
+      position: relative;
+      z-index: 1;
+    }
+    .answers-board.show { display: flex; }
+    .answer-row {
+      display: flex;
+      align-items: baseline;
+      gap: 20px;
+      padding: 16px 24px;
+      background: #2a3c3f;
+      border-radius: 3px;
+      border-left: 5px solid #1a2c2f;
+      animation: slideIn 0.35s ease;
+      box-shadow: 4px 4px 0 #1a2c2f;
+    }
+    .answer-row.has-answer { border-left-color: #cc8085; }
+    .answer-team {
+      font-family: 'Anton', sans-serif;
+      font-size: 1.3rem;
+      color: #cc8085;
+      letter-spacing: 0.05em;
+      flex-shrink: 0;
+      width: 220px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .answer-text {
+      font-size: 1.2rem;
+      font-weight: 600;
+      color: #f0ece8;
+      line-height: 1.4;
+      flex: 1;
+    }
+    .answer-text.empty-answer { color: #3a5558; font-style: italic; font-weight: 400; }
+    .answer-text.hidden-answer {
+      font-family: 'Brother 1816 Printed', 'Anton', sans-serif;
+      color: #3a5558;
+      letter-spacing: 0.2em;
+      font-size: 1.4rem;
+      text-transform: uppercase;
+    }
+    .answer-img {
+      max-width: 260px;
+      max-height: 180px;
+      border-radius: 3px;
+      border: 2px solid #1a2c2f;
+      display: block;
+    }
+    .answer-row.drawing { align-items: center; }
+
+    /* Full-screen drawing highlight */
+    .highlight-overlay {
+      position: fixed;
+      inset: 0;
+      background: #c07840;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.06'/%3E%3C/svg%3E");
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      z-index: 50;
+      padding: 40px 60px;
+    }
+    .highlight-overlay.show { display: flex; }
+    .highlight-team {
+      font-family: 'Hello Imperfect', 'Anton', sans-serif;
+      font-size: 2.8rem;
+      color: #2a3c3f;
+      text-shadow:
+        1px 1px 0 #e8c87a,
+        3px 3px 0 #1a2c2f,
+        4px 4px 0 #1a2c2f;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-bottom: 28px;
+    }
+    .highlight-img {
+      max-width: 100%;
+      max-height: calc(100vh - 200px);
+      border-radius: 4px;
+      border: 4px solid #2a3c3f;
+      box-shadow: 8px 8px 0 #1a2c2f;
+      object-fit: contain;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Slow Body</h1>
+    <div class="header-sub">Anti-Trivia · Live Leaderboard</div>
+    <div class="header-divider"></div>
+  </header>
+
+  <div class="q-banner" id="qBanner">
+    <div class="label" id="qLabel">Current Question</div>
+    <div class="text" id="qText"></div>
+  </div>
+
+  <div class="board" id="board">
+    <div class="empty">Waiting for teams to join...</div>
+  </div>
+
+  <div class="answers-board" id="answersBoard"></div>
+
+  <div class="highlight-overlay" id="highlightOverlay">
+    <div class="highlight-team" id="highlightTeamName"></div>
+    <img class="highlight-img" id="highlightImg" alt="drawing" />
+  </div>
+
+  <script src="/socket.io/socket.io.js"></script>
+  <script>
+    const socket = io();
+    const medals = ['🥇', '🥈', '🥉'];
+    const tierClass = ['gold', 'silver', 'bronze'];
+
+    socket.on('connect', () => socket.emit('leaderboard:join'));
+
+    socket.on('display:highlight', data => {
+      const overlay = document.getElementById('highlightOverlay');
+      if (data && data.answer) {
+        document.getElementById('highlightTeamName').textContent = data.name;
+        document.getElementById('highlightImg').src = data.answer;
+        overlay.classList.add('show');
+      } else {
+        overlay.classList.remove('show');
+      }
+    });
+
+    socket.on('display:mode', mode => {
+      document.getElementById('board').style.display = mode === 'leaderboard' ? '' : 'none';
+      document.getElementById('answersBoard').classList.toggle('show', mode === 'answers');
+    });
+
+    socket.on('display:answers', ({ question, answers }) => {
+      const el = document.getElementById('answersBoard');
+      if (!answers.length) { el.innerHTML = ''; return; }
+      el.innerHTML = answers.map(a => {
+        const has = a.answer !== null && a.answer !== undefined && a.answer !== '';
+        const isImg = has && a.answer.startsWith('data:image');
+        let answerContent;
+        if (!has) {
+          answerContent = `<div class="answer-text empty-answer">no answer yet...</div>`;
+        } else if (!a.revealed) {
+          answerContent = `<div class="answer-text hidden-answer">???</div>`;
+        } else if (isImg) {
+          answerContent = `<img class="answer-img" src="${a.answer}" alt="drawing" />`;
+        } else {
+          answerContent = `<div class="answer-text">${esc(a.answer)}</div>`;
+        }
+        return `
+          <div class="answer-row ${a.revealed ? 'has-answer' : ''} ${isImg && a.revealed ? 'drawing' : ''}">
+            <div class="answer-team">${esc(a.name)}</div>
+            ${answerContent}
+          </div>`;
+      }).join('');
+    });
+
+    socket.on('leaderboard:update', teams => {
+      const board = document.getElementById('board');
+      if (!teams.length) {
+        board.innerHTML = '<div class="empty">Waiting for teams to join...</div>';
+        return;
+      }
+      board.innerHTML = teams.map((t, i) => {
+        const tier = i < 3 ? tierClass[i] : '';
+        const rankDisplay = i < 3 ? medals[i] : `#${i + 1}`;
+        return `
+          <div class="row ${tier}">
+            <div class="rank">${rankDisplay}</div>
+            <div class="name">${esc(t.name)}</div>
+            <div class="score-wrap">
+              <div class="score">${t.score}</div>
+              <div class="pts-label">pts</div>
+            </div>
+          </div>`;
+      }).join('');
+    });
+
+    socket.on('question:new', q => {
+      document.getElementById('qLabel').textContent = `Question ${q.number}`;
+      document.getElementById('qText').textContent = q.text;
+      document.getElementById('qBanner').classList.add('show');
+    });
+
+    socket.on('question:clear', () => {
+      document.getElementById('qBanner').classList.remove('show');
+    });
+
+    function esc(s) {
+      return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+    }
+  </script>
+</body>
+</html>

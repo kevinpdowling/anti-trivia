@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Anti-Trivia</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Anton&family=Poppins:wght@400;600;700;900&display=swap" rel="stylesheet">
+  <style>
+    @font-face {
+      font-family: 'Hello Imperfect';
+      src: url('/fonts/HelloImperfect.otf') format('opentype');
+      font-weight: normal;
+    }
+    @font-face {
+      font-family: 'Brother 1816 Printed';
+      src: url('/fonts/Brother1816Printed-Bold.ttf') format('truetype');
+      font-weight: bold;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      background: #c07840;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.06'/%3E%3C/svg%3E");
+      color: #f0ece8;
+      font-family: 'Poppins', 'Segoe UI', sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 20px 20px 30px;
+    }
+
+    /* ── Persistent team banner ── */
+    .team-banner {
+      display: none;
+      width: 100%;
+      max-width: 480px;
+      background: #2a3c3f;
+      border: 1px solid #1a2c2f;
+      border-bottom: 3px solid #cc8085;
+      border-radius: 3px 3px 0 0;
+      padding: 10px 16px;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 16px;
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      box-shadow: 4px 4px 0 #1a2c2f;
+    }
+    .team-banner.show { display: flex; }
+    .banner-brand {
+      font-family: 'Hello Imperfect', 'Anton', sans-serif;
+      font-size: 1rem;
+      color: #cc8085;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+    .banner-team-label {
+      font-family: 'Brother 1816 Printed', 'Anton', sans-serif;
+      font-size: 0.6rem;
+      font-weight: bold;
+      color: #3a5558;
+      text-transform: uppercase;
+      letter-spacing: 0.18em;
+      text-align: right;
+      margin-bottom: 1px;
+    }
+    .banner-team-name {
+      font-family: 'Anton', sans-serif;
+      font-size: 1.1rem;
+      color: #f0ece8;
+      letter-spacing: 0.05em;
+      text-align: right;
+    }
+
+    .screen { display: none; width: 100%; max-width: 480px; flex-direction: column; align-items: center; }
+    .screen.active { display: flex; }
+
+    /* ── Branding ── */
+    .slow-body {
+      font-family: 'Hello Imperfect', 'Anton', sans-serif;
+      font-size: 3.2rem;
+      color: #2a3c3f;
+      text-shadow:
+        1px 1px 0 #e8c87a,
+        3px 3px 0 #1a2c2f,
+        4px 4px 0 #1a2c2f;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      text-align: center;
+      line-height: 1;
+      margin-bottom: 4px;
+    }
+    .anti-trivia-sub {
+      font-family: 'Brother 1816 Printed', 'Anton', sans-serif;
+      font-size: 0.85rem;
+      color: #f0ece8;
+      background: #2a3c3f;
+      padding: 3px 12px;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      margin-bottom: 2rem;
+      display: inline-block;
+      box-shadow: 3px 3px 0 #1a2c2f;
+    }
+
+    input[type=text], textarea {
+      width: 100%;
+      padding: 14px 16px;
+      background: #2a3c3f;
+      border: 2px solid #1a2c2f;
+      border-radius: 3px;
+      color: #f0ece8;
+      font-size: 1.05rem;
+      font-weight: 500;
+      outline: none;
+      transition: border-color 0.2s, box-shadow 0.2s;
+      font-family: inherit;
+    }
+    input[type=text]:focus, textarea:focus {
+      border-color: #cc8085;
+      box-shadow: 0 0 0 3px rgba(204,128,133,0.15);
+    }
+    input[type=text]::placeholder, textarea::placeholder { color: #3a5558; }
+    textarea { resize: none; height: 130px; }
+
+    .btn {
+      width: 100%;
+      padding: 15px;
+      margin-top: 14px;
+      border: none;
+      border-radius: 3px;
+      font-size: 1rem;
+      font-weight: bold;
+      cursor: pointer;
+      font-family: 'Brother 1816 Printed', 'Anton', sans-serif;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      transition: box-shadow 0.08s, transform 0.08s;
+    }
+    .btn:active { transform: translate(2px, 2px); }
+
+    .btn-primary {
+      background: #cc8085;
+      color: #fff;
+      box-shadow: 4px 4px 0 #1a2c2f;
+    }
+    .btn-primary:active { box-shadow: 2px 2px 0 #1a2c2f; }
+
+    .btn-outline {
+      background: transparent;
+      color: #2a3c3f;
+      border: 2px solid #2a3c3f;
+      font-family: 'Brother 1816 Printed', 'Anton', sans-serif;
+      box-shadow: 3px 3px 0 #1a2c2f;
+    }
+    .btn-outline:hover { background: rgba(42,60,63,0.08); }
+    .btn-outline:active { box-shadow: 1px 1px 0 #1a2c2f; }
+
+    .err { color: #1a2c2f; font-size: 0.88rem; font-weight: 700; margin-top: 8px; min-height: 1.3em; text-align: center; font-family: 'Brother 1816 Printed', 'Anton', sans-serif; letter-spacing: 0.05em; text-transform: uppercase; }
+
+    .pulse {
+      color: #2a3c3f;
+      font-weight: 700;
+      text-align: center;
+      margin-top: 1.5rem;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      font-size: 0.8rem;
+      font-family: 'Brother 1816 Printed', 'Anton', sans-serif;
+    }
+    .dots::after {
+      content: '';
+      animation: dotanim 1.5s steps(3, end) infinite;
+    }
+    @keyframes dotanim {
+      0%   { content: ''; }
+      33%  { content: '.'; }
+      66%  { content: '..'; }
+      100% { content: '...'; }
+    }
+
+    .q-label {
+      font-family: 'Brother 1816 Printed', 'Anton', sans-serif;
+      font-size: 0.78rem;
+      color: #2a3c3f;
+      text-transform: uppercase;
+      letter-spacing: 0.2em;
+      margin-bottom: 10px;
+      align-self: flex-start;
+    }
+    .q-box {
+      width: 100%;
+      background: #2a3c3f;
+      border-left: 5px solid #cc8085;
+      border-radius: 0 3px 3px 0;
+      padding: 20px;
+      font-size: 1.2rem;
+      font-weight: 600;
+      line-height: 1.55;
+      margin-bottom: 1rem;
+      color: #f0ece8;
+      box-shadow: 4px 4px 0 #1a2c2f;
+    }
+
+    /* ── Drawing canvas ── */
+    .draw-wrap { width: 100%; display: none; flex-direction: column; align-items: center; gap: 10px; }
+    .draw-wrap.show { display: flex; }
+
+    .color-palette {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      align-self: flex-start;
+      flex-wrap: wrap;
+    }
+    .color-btn {
+      width: 28px; height: 28px;
+      border-radius: 50%;
+      border: 3px solid transparent;
+      cursor: pointer;
+      transition: transform 0.1s, border-color 0.1s;
+    }
+    .color-btn.active { border-color: #2a3c3f; transform: scale(1.15); }
+    .eraser-btn {
+      padding: 4px 10px;
+      background: transparent;
+      border: 2px solid #2a3c3f;
+      border-radius: 3px;
+      color: #2a3c3f;
+      font-size: 0.75rem;
+      font-weight: 700;
+      cursor: pointer;
+      font-family: 'Brother 1816 Printed', 'Anton', sans-serif;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+    .eraser-btn.active { background: #2a3c3f; color: #f0ece8; }
+
+    #drawCanvas {
+      width: 100%;
+      border-radius: 3px;
+      cursor: crosshair;
+      touch-action: none;
+      display: block;
+      background: #fff;
+      border: 3px solid #1a2c2f;
+      box-shadow: 4px 4px 0 #1a2c2f;
+    }
+
+    .draw-actions {
+      display: flex;
+      justify-content: flex-end;
+      width: 100%;
+    }
+    .clear-btn {
+      padding: 6px 14px;
+      background: transparent;
+      border: 2px solid #2a3c3f;
+      border-radius: 3px;
+      color: #2a3c3f;
+      font-size: 0.78rem;
+      font-weight: 700;
+      cursor: pointer;
+      font-family: 'Brother 1816 Printed', 'Anton', sans-serif;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      transition: all 0.15s;
+    }
+    .clear-btn:hover { background: #2a3c3f; color: #f0ece8; }
+
+    .text-wrap { width: 100%; display: none; flex-direction: column; }
+    .text-wrap.show { display: flex; }
+
+    /* ── Submitted ── */
+    .check { font-size: 4rem; margin-bottom: 1rem; }
+    .locked-title {
+      font-family: 'Hello Imperfect', 'Anton', sans-serif;
+      font-size: 1.6rem;
+      color: #2a3c3f;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      text-shadow: 2px 2px 0 #e8c87a;
+    }
+    .locked-sub {
+      font-family: 'Brother 1816 Printed', 'Anton', sans-serif;
+      color: #2a3c3f;
+      font-size: 0.78rem;
+      font-weight: 700;
+      margin-top: 5px;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+    }
+    .locked-answer {
+      width: 100%;
+      background: #2a3c3f;
+      border: 1px solid #1a2c2f;
+      border-radius: 3px;
+      padding: 14px 16px;
+      color: #7a9090;
+      font-style: italic;
+      text-align: center;
+      margin-top: 1rem;
+      word-break: break-word;
+      line-height: 1.5;
+      box-shadow: 4px 4px 0 #1a2c2f;
+    }
+    .locked-drawing {
+      width: 100%;
+      border-radius: 3px;
+      margin-top: 1rem;
+      display: none;
+      border: 3px solid #1a2c2f;
+      box-shadow: 4px 4px 0 #1a2c2f;
+    }
+
+    .conn-bar {
+      position: fixed; top: 0; left: 0; right: 0;
+      background: #cc8085; color: #fff;
+      text-align: center; padding: 7px;
+      font-size: 0.85rem; font-weight: 700;
+      display: none;
+      font-family: 'Brother 1816 Printed', 'Anton', sans-serif;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      z-index: 100;
+    }
+    .conn-bar.show { display: block; }
+  </style>
+</head>
+<body>
+  <div class="conn-bar" id="connBar">Connection lost — reconnecting...</div>
+
+  <div class="team-banner" id="teamBanner">
+    <div class="banner-brand">Slow Body</div>
+    <div>
+      <div class="banner-team-label">Your Team</div>
+      <div class="banner-team-name" id="bannerTeamName"></div>
+    </div>
+  </div>
+
+  <!-- SIGNUP -->
+  <div class="screen active" id="s-signup">
+    <div class="slow-body">Slow Body</div>
+    <div class="anti-trivia-sub">Anti-Trivia</div>
+    <input type="text" id="nameInput" placeholder="Team name..." maxlength="30" autocomplete="off" />
+    <div class="err" id="joinErr"></div>
+    <button class="btn btn-primary" onclick="joinGame()">Join Game</button>
+  </div>
+
+  <!-- WAITING -->
+  <div class="screen" id="s-waiting">
+    <div class="slow-body">Slow Body</div>
+    <div class="anti-trivia-sub">Anti-Trivia</div>
+    <div class="pulse">Waiting for the host to start<span class="dots"></span></div>
+  </div>
+
+  <!-- QUESTION -->
+  <div class="screen" id="s-question">
+    <div class="q-label" id="qNum">Question 1</div>
+    <div class="q-box" id="qText"></div>
+
+    <div class="text-wrap" id="textWrap">
+      <textarea id="answerInput" placeholder="Type your answer here..." maxlength="300"></textarea>
+      <div class="err" id="answerErr"></div>
+      <button class="btn btn-primary" onclick="submitAnswer()">Lock In Answer</button>
+    </div>
+
+    <div class="draw-wrap" id="drawWrap">
+      <div class="color-palette">
+        <button class="color-btn active" data-color="#000000" style="background:#000000" onclick="setColor(this)"></button>
+        <button class="color-btn" data-color="#cc3333" style="background:#cc3333" onclick="setColor(this)"></button>
+        <button class="color-btn" data-color="#3478cc" style="background:#3478cc" onclick="setColor(this)"></button>
+        <button class="color-btn" data-color="#2e9952" style="background:#2e9952" onclick="setColor(this)"></button>
+        <button class="color-btn" data-color="#d4860a" style="background:#d4860a" onclick="setColor(this)"></button>
+        <button class="color-btn" data-color="#8855bb" style="background:#8855bb" onclick="setColor(this)"></button>
+        <button class="eraser-btn" id="eraserBtn" onclick="setEraser()">Eraser</button>
+      </div>
+      <canvas id="drawCanvas"></canvas>
+      <div class="draw-actions">
+        <button class="clear-btn" onclick="clearCanvas()">Clear Drawing</button>
+      </div>
+      <button class="btn btn-primary" onclick="submitDrawing()">Lock In Drawing</button>
+    </div>
+  </div>
+
+  <!-- SUBMITTED -->
+  <div class="screen" id="s-submitted">
+    <div class="check">✅</div>
+    <div class="locked-title">Locked In!</div>
+    <div class="locked-sub">Waiting for the host to score...</div>
+    <div class="locked-answer" id="lockedAnswer"></div>
+    <img class="locked-drawing" id="lockedDrawing" alt="Your drawing" />
+    <button class="btn btn-outline" style="margin-top:1.5rem" onclick="changeAnswer()">Change Answer</button>
+  </div>
+
+  <script src="/socket.io/socket.io.js"></script>
+  <script>
+    const socket = io();
+    let myName = '', inGame = false, currentQuestionType = 'text';
+
+    const canvas = document.getElementById('drawCanvas');
+    const ctx = canvas.getContext('2d');
+    let drawing = false;
+    let penColor = '#000000';
+    let isEraser = false;
+
+    function initCanvas() {
+      canvas.width = canvas.offsetWidth || 440;
+      canvas.height = Math.round(canvas.width * 0.65);
+      ctx.fillStyle = '#ffffff';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      ctx.lineCap = 'round';
+      ctx.lineJoin = 'round';
+      ctx.lineWidth = 5;
+    }
+
+    function getPos(e) {
+      const rect = canvas.getBoundingClientRect();
+      const src = e.touches ? e.touches[0] : e;
+      return {
+        x: (src.clientX - rect.left) * (canvas.width / rect.width),
+        y: (src.clientY - rect.top)  * (canvas.height / rect.height),
+      };
+    }
+
+    function startDraw(e) { e.preventDefault(); drawing = true; const p = getPos(e); ctx.beginPath(); ctx.moveTo(p.x, p.y); }
+    function doDraw(e) {
+      if (!drawing) return; e.preventDefault();
+      const p = getPos(e);
+      ctx.strokeStyle = isEraser ? '#ffffff' : penColor;
+      ctx.lineWidth = isEraser ? 24 : 5;
+      ctx.lineTo(p.x, p.y); ctx.stroke();
+    }
+    function stopDraw() { drawing = false; }
+
+    canvas.addEventListener('mousedown',  startDraw);
+    canvas.addEventListener('mousemove',  doDraw);
+    canvas.addEventListener('mouseup',    stopDraw);
+    canvas.addEventListener('mouseleave', stopDraw);
+    canvas.addEventListener('touchstart', startDraw, { passive: false });
+    canvas.addEventListener('touchmove',  doDraw,    { passive: false });
+    canvas.addEventListener('touchend',   stopDraw);
+
+    function setColor(btn) {
+      penColor = btn.dataset.color; isEraser = false;
+      document.querySelectorAll('.color-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      document.getElementById('eraserBtn').classList.remove('active');
+    }
+    function setEraser() {
+      isEraser = true;
+      document.querySelectorAll('.color-btn').forEach(b => b.classList.remove('active'));
+      document.getElementById('eraserBtn').classList.add('active');
+    }
+    function clearCanvas() { ctx.fillStyle = '#ffffff'; ctx.fillRect(0, 0, canvas.width, canvas.height); }
+
+    function show(id) {
+      document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+      document.getElementById('s-' + id).classList.add('active');
+    }
+
+    function joinGame() {
+      const name = document.getElementById('nameInput').value.trim();
+      if (!name) { document.getElementById('joinErr').textContent = 'Please enter a team name.'; return; }
+      document.getElementById('joinErr').textContent = '';
+      socket.emit('team:join', { name });
+    }
+
+    function submitAnswer() {
+      const answer = document.getElementById('answerInput').value.trim();
+      if (!answer) { document.getElementById('answerErr').textContent = 'Write an answer first!'; return; }
+      document.getElementById('answerErr').textContent = '';
+      socket.emit('team:submit', { answer });
+      document.getElementById('lockedAnswer').textContent = `"${answer}"`;
+      document.getElementById('lockedAnswer').style.display = '';
+      document.getElementById('lockedDrawing').style.display = 'none';
+      show('submitted');
+    }
+
+    function submitDrawing() {
+      const dataUrl = canvas.toDataURL('image/jpeg', 0.7);
+      socket.emit('team:submit', { answer: dataUrl });
+      document.getElementById('lockedDrawing').src = dataUrl;
+      document.getElementById('lockedDrawing').style.display = 'block';
+      document.getElementById('lockedAnswer').style.display = 'none';
+      show('submitted');
+    }
+
+    function changeAnswer() { show('question'); }
+
+    document.getElementById('nameInput').addEventListener('keydown', e => { if (e.key === 'Enter') joinGame(); });
+
+    socket.on('join:error', msg => { document.getElementById('joinErr').textContent = msg; });
+
+    socket.on('join:success', ({ name, question }) => {
+      myName = name; inGame = true;
+      document.getElementById('bannerTeamName').textContent = name;
+      document.getElementById('teamBanner').classList.add('show');
+      question ? showQuestion(question) : show('waiting');
+    });
+
+    socket.on('question:new', q => { if (inGame) showQuestion(q); });
+
+    socket.on('question:clear', () => {
+      if (!inGame) return;
+      document.getElementById('answerInput').value = '';
+      show('waiting');
+    });
+
+    socket.on('disconnect', () => document.getElementById('connBar').classList.add('show'));
+    socket.on('connect',    () => document.getElementById('connBar').classList.remove('show'));
+
+    function showQuestion(q) {
+      currentQuestionType = q.type || 'text';
+      document.getElementById('qNum').textContent = `Question ${q.number}`;
+      document.getElementById('qText').textContent = q.text;
+      const isDrawing = currentQuestionType === 'drawing';
+      document.getElementById('textWrap').classList.toggle('show', !isDrawing);
+      document.getElementById('drawWrap').classList.toggle('show', isDrawing);
+      document.getElementById('answerInput').value = '';
+      if (isDrawing) {
+        setTimeout(() => {
+          initCanvas();
+          penColor = '#000000'; isEraser = false;
+          document.querySelectorAll('.color-btn').forEach(b => b.classList.remove('active'));
+          document.querySelector('[data-color="#000000"]').classList.add('active');
+          document.getElementById('eraserBtn').classList.remove('active');
+        }, 50);
+      }
+      show('question');
+    }
+  </script>
+</body>
+</html>

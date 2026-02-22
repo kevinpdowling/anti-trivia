@@ -1,0 +1,9 @@
+node_modules/
+
+# Raw font files dropped in root (copies live in public/fonts/)
+/*.otf
+/*.ttf
+
+# Local-only files
+start.bat
+public/test_host.html
