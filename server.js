@@ -186,7 +186,7 @@ server.listen(PORT, () => {
   console.log('\n  Trivia Night is running!\n');
   console.log('  Host dashboard  →  http://localhost:3000/host.html');
   console.log('  Leaderboard     →  http://localhost:3000/leaderboard.html');
-  console.log('  Team join page  →  http://localhost:3000/team.html\n');
+  console.log('  Team join page  →  http://localhost:3000/signup.html\n');
   console.log('  For teams on the same WiFi, share your local IP instead of localhost.');
   console.log('  Find it by running: ipconfig\n');
 });
