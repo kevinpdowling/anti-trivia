@@ -23,11 +23,11 @@
       width: 1920px;
       height: 1080px;
       overflow: hidden;
-      background-color: #b8823c;
+      background-color: #c8b89a;
       background-image: url('/images/paper.webp');
       background-size: cover;
       background-position: center;
-      color: #f0ece8;
+      color: #1a1a1a;
       font-family: 'Poppins', 'Segoe UI', sans-serif;
     }
 
@@ -41,15 +41,13 @@
       flex-shrink: 0;
       text-align: center;
       padding: 36px 80px 28px;
-      border-bottom: 4px solid #1a2c2f;
-      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80'%3E%3Cpath d='M40 10 C32 10 26 16 26 23 L26 30 C26 35 32 38 32 40 C32 42 26 45 26 50 L26 57 C26 64 32 70 40 70 C48 70 54 64 54 57 L54 50 C54 45 48 42 48 40 C48 38 54 35 54 30 L54 23 C54 16 48 10 40 10Z' fill='%23a06030' opacity='0.2'/%3E%3C/svg%3E");
-      background-size: 80px 80px;
+      border-bottom: 3px solid rgba(0,0,0,0.25);
       position: relative;
     }
     header h1 {
       font-family: 'Hello Imperfect', 'Anton', sans-serif;
       font-size: 7rem;
-      color: #fff;
+      color: #1a1a1a;
       text-shadow: none;
       letter-spacing: 0.06em;
       text-transform: uppercase;
@@ -59,13 +57,13 @@
       display: inline-block;
       font-family: 'Brother 1816 Printed', 'Anton', sans-serif;
       font-size: 1.05rem;
-      color: #f0ece8;
-      background: #2a3c3f;
+      color: #1a1a1a;
+      background: rgba(0,0,0,0.1);
       padding: 5px 22px;
       letter-spacing: 0.4em;
       text-transform: uppercase;
       margin-top: 12px;
-      box-shadow: 5px 5px 0 #1a2c2f;
+      box-shadow: 4px 4px 0 rgba(0,0,0,0.15);
     }
     .q-badge {
       position: absolute;
@@ -73,13 +71,13 @@
       right: 80px;
       font-family: 'Brother 1816 Printed', 'Anton', sans-serif;
       font-size: 1.1rem;
-      color: #cc8085;
-      background: #2a3c3f;
-      border: 2px solid #1a2c2f;
+      color: #1a1a1a;
+      background: rgba(0,0,0,0.08);
+      border: 2px solid rgba(0,0,0,0.25);
       padding: 8px 20px;
       letter-spacing: 0.2em;
       text-transform: uppercase;
-      box-shadow: 4px 4px 0 #1a2c2f;
+      box-shadow: 4px 4px 0 rgba(0,0,0,0.12);
       display: none;
     }
     .q-badge.show { display: block; }
@@ -89,18 +87,18 @@
       flex-shrink: 0;
       margin: 18px 80px 0;
       padding: 18px 36px;
-      background: #2a3c3f;
-      border: 2px solid #1a2c2f;
-      border-left: 8px solid #cc8085;
+      background: rgba(0,0,0,0.07);
+      border: 2px solid rgba(0,0,0,0.15);
+      border-left: 8px solid rgba(0,0,0,0.4);
       border-radius: 0 4px 4px 0;
       display: none;
-      box-shadow: 6px 6px 0 #1a2c2f;
+      box-shadow: 5px 5px 0 rgba(0,0,0,0.1);
     }
     .q-banner.show { display: block; }
     .q-banner .label {
       font-family: 'Brother 1816 Printed', 'Anton', sans-serif;
       font-size: 0.85rem;
-      color: #cc8085;
+      color: rgba(0,0,0,0.5);
       text-transform: uppercase;
       letter-spacing: 0.25em;
       margin-bottom: 6px;
@@ -108,7 +106,7 @@
     .q-banner .text {
       font-size: 1.6rem;
       font-weight: 600;
-      color: #f0ece8;
+      color: #1a1a1a;
       line-height: 1.35;
     }
 
@@ -126,10 +124,10 @@
       display: flex;
       align-items: center;
       padding: 0 36px;
-      background: #2a3c3f;
+      background: rgba(0,0,0,0.07);
       border-radius: 4px;
-      border-left: 8px solid #1a2c2f;
-      box-shadow: 6px 6px 0 #1a2c2f;
+      border-left: 8px solid rgba(0,0,0,0.3);
+      box-shadow: 5px 5px 0 rgba(0,0,0,0.1);
       flex: 1;
       min-height: 0;
       animation: slideIn 0.35s ease;
@@ -139,9 +137,9 @@
       to   { opacity: 1; transform: translateX(0); }
     }
 
-    .row.gold   { border-left-color: #c9a227; background: linear-gradient(to right, rgba(201,162,39,0.2), #2a3c3f 40%); }
-    .row.silver { border-left-color: #aaaaaa; background: linear-gradient(to right, rgba(170,170,170,0.12), #2a3c3f 40%); }
-    .row.bronze { border-left-color: #cc6622; background: linear-gradient(to right, rgba(204,102,34,0.12), #2a3c3f 40%); }
+    .row.gold   { border-left-color: rgba(0,0,0,0.55); background: rgba(0,0,0,0.1); }
+    .row.silver { border-left-color: rgba(0,0,0,0.4);  background: rgba(0,0,0,0.08); }
+    .row.bronze { border-left-color: rgba(0,0,0,0.32); background: rgba(0,0,0,0.07); }
 
     .rank {
       font-family: 'Anton', sans-serif;
@@ -149,12 +147,12 @@
       width: 120px;
       text-align: center;
       flex-shrink: 0;
-      color: #3a5558;
+      color: rgba(0,0,0,0.35);
       letter-spacing: 0.05em;
     }
-    .gold   .rank { color: #c9a227; text-shadow: 0 0 30px rgba(201,162,39,0.4); }
-    .silver .rank { color: #aaaaaa; }
-    .bronze .rank { color: #cc6622; }
+    .gold   .rank { color: rgba(0,0,0,0.75); }
+    .silver .rank { color: rgba(0,0,0,0.55); }
+    .bronze .rank { color: rgba(0,0,0,0.45); }
 
     .name {
       flex: 1;
@@ -165,7 +163,7 @@
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
-      color: #f0ece8;
+      color: #1a1a1a;
     }
 
     .score-wrap {
@@ -178,14 +176,14 @@
     .score {
       font-family: 'Anton', sans-serif;
       font-size: 4rem;
-      color: #c49a35;
+      color: #1a1a1a;
       line-height: 1;
       letter-spacing: 0.05em;
     }
     .pts-label {
       font-family: 'Brother 1816 Printed', 'Anton', sans-serif;
       font-size: 1rem;
-      color: #cc8085;
+      color: rgba(0,0,0,0.45);
       text-transform: uppercase;
       letter-spacing: 0.2em;
     }
@@ -196,7 +194,7 @@
       align-items: center;
       justify-content: center;
       font-family: 'Brother 1816 Printed', 'Anton', sans-serif;
-      color: #a06030;
+      color: rgba(0,0,0,0.3);
       font-size: 2rem;
       letter-spacing: 0.15em;
       text-transform: uppercase;
@@ -206,7 +204,7 @@
     .highlight-overlay {
       position: fixed;
       inset: 0;
-      background-color: #b8823c;
+      background-color: #c8b89a;
       background-image: url('/images/paper.webp');
       background-size: cover;
       background-position: center;
@@ -223,7 +221,7 @@
     .highlight-team {
       font-family: 'Hello Imperfect', 'Anton', sans-serif;
       font-size: 3rem;
-      color: #fff;
+      color: #1a1a1a;
       letter-spacing: 0.08em;
       text-transform: uppercase;
     }
@@ -235,15 +233,15 @@
       width: 100%;
       object-fit: contain;
       border-radius: 6px;
-      border: 6px solid #2a3c3f;
-      box-shadow: 10px 10px 0 #1a2c2f;
+      border: 6px solid rgba(0,0,0,0.3);
+      box-shadow: 10px 10px 0 rgba(0,0,0,0.15);
     }
 
     /* Text answer */
     .highlight-text {
       font-family: 'Hello Imperfect', 'Anton', sans-serif;
       font-size: 6rem;
-      color: #fff;
+      color: #1a1a1a;
       text-align: center;
       line-height: 1.2;
       letter-spacing: 0.06em;
