@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <title>Anti-Trivia Leaderboard</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Anton&family=Poppins:wght@400;600;700;900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Anton&family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
   <style>
     @font-face {
       font-family: 'Hello Imperfect';
@@ -18,30 +18,34 @@
     }
 
     * { margin: 0; padding: 0; box-sizing: border-box; }
-    input, textarea, button, select { border-radius: 10px !important; }
-    body {
+
+    html, body {
+      width: 1920px;
+      height: 1080px;
+      overflow: hidden;
       background-color: #b8823c;
       color: #f0ece8;
       font-family: 'Poppins', 'Segoe UI', sans-serif;
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      overflow: hidden;
     }
 
+    body {
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* ── Header ── */
     header {
+      flex-shrink: 0;
       text-align: center;
-      padding: 32px 20px 20px;
+      padding: 36px 80px 28px;
+      border-bottom: 4px solid #1a2c2f;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80'%3E%3Cpath d='M40 10 C32 10 26 16 26 23 L26 30 C26 35 32 38 32 40 C32 42 26 45 26 50 L26 57 C26 64 32 70 40 70 C48 70 54 64 54 57 L54 50 C54 45 48 42 48 40 C48 38 54 35 54 30 L54 23 C54 16 48 10 40 10Z' fill='%23a06030' opacity='0.2'/%3E%3C/svg%3E");
+      background-size: 80px 80px;
       position: relative;
-      z-index: 1;
-      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='60' height='60'%3E%3Cpath d='M30 8 C24 8 20 12 20 17 L20 22 C20 26 24 28 24 30 C24 32 20 34 20 38 L20 43 C20 48 24 52 30 52 C36 52 40 48 40 43 L40 38 C40 34 36 32 36 30 C36 28 40 26 40 22 L40 17 C40 12 36 8 30 8Z' fill='%23a06030' opacity='0.25'/%3E%3C/svg%3E");
-      background-size: 60px 60px;
-      border-bottom: 3px solid #1a2c2f;
-      padding-bottom: 24px;
     }
     header h1 {
       font-family: 'Hello Imperfect', 'Anton', sans-serif;
-      font-size: 6rem;
+      font-size: 7rem;
       color: #fff;
       text-shadow: none;
       letter-spacing: 0.06em;
@@ -51,120 +55,136 @@
     .header-sub {
       display: inline-block;
       font-family: 'Brother 1816 Printed', 'Anton', sans-serif;
-      font-size: 0.85rem;
+      font-size: 1.05rem;
       color: #f0ece8;
       background: #2a3c3f;
-      padding: 4px 16px;
-      letter-spacing: 0.35em;
+      padding: 5px 22px;
+      letter-spacing: 0.4em;
       text-transform: uppercase;
-      margin-top: 10px;
-      box-shadow: 4px 4px 0 #1a2c2f;
+      margin-top: 12px;
+      box-shadow: 5px 5px 0 #1a2c2f;
     }
-    .header-divider {
-      width: 140px;
-      height: 3px;
-      background: linear-gradient(to right, transparent, #2a3c3f, transparent);
-      margin: 16px auto 0;
-    }
-
-    .q-banner {
-      margin: 14px 60px 6px;
-      padding: 14px 28px;
+    .q-badge {
+      position: absolute;
+      top: 36px;
+      right: 80px;
+      font-family: 'Brother 1816 Printed', 'Anton', sans-serif;
+      font-size: 1.1rem;
+      color: #cc8085;
       background: #2a3c3f;
-      border: 1px solid #1a2c2f;
-      border-left: 5px solid #cc8085;
-      border-radius: 0 3px 3px 0;
-      text-align: center;
-      display: none;
-      animation: fadeIn 0.4s ease;
-      position: relative;
-      z-index: 1;
+      border: 2px solid #1a2c2f;
+      padding: 8px 20px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
       box-shadow: 4px 4px 0 #1a2c2f;
+      display: none;
+    }
+    .q-badge.show { display: block; }
+
+    /* ── Question banner ── */
+    .q-banner {
+      flex-shrink: 0;
+      margin: 18px 80px 0;
+      padding: 18px 36px;
+      background: #2a3c3f;
+      border: 2px solid #1a2c2f;
+      border-left: 8px solid #cc8085;
+      border-radius: 0 4px 4px 0;
+      display: none;
+      box-shadow: 6px 6px 0 #1a2c2f;
     }
     .q-banner.show { display: block; }
     .q-banner .label {
       font-family: 'Brother 1816 Printed', 'Anton', sans-serif;
-      font-size: 0.78rem;
+      font-size: 0.85rem;
       color: #cc8085;
       text-transform: uppercase;
-      letter-spacing: 0.22em;
+      letter-spacing: 0.25em;
       margin-bottom: 6px;
     }
-    .q-banner .text { font-size: 1.3rem; font-weight: 600; color: #f0ece8; line-height: 1.4; }
+    .q-banner .text {
+      font-size: 1.6rem;
+      font-weight: 600;
+      color: #f0ece8;
+      line-height: 1.35;
+    }
 
+    /* ── Leaderboard rows ── */
     .board {
       flex: 1;
-      padding: 16px 60px 30px;
+      padding: 24px 80px 30px;
       display: flex;
       flex-direction: column;
-      gap: 10px;
+      gap: 12px;
       overflow: hidden;
-      position: relative;
-      z-index: 1;
     }
 
     .row {
       display: flex;
       align-items: center;
-      padding: 18px 28px;
+      padding: 0 36px;
       background: #2a3c3f;
-      border-radius: 3px;
-      border-left: 6px solid #1a2c2f;
-      animation: slideIn 0.4s ease;
-      box-shadow: 4px 4px 0 #1a2c2f;
+      border-radius: 4px;
+      border-left: 8px solid #1a2c2f;
+      box-shadow: 6px 6px 0 #1a2c2f;
+      flex: 1;
+      min-height: 0;
+      animation: slideIn 0.35s ease;
     }
     @keyframes slideIn {
-      from { opacity: 0; transform: translateX(-24px); }
+      from { opacity: 0; transform: translateX(-30px); }
       to   { opacity: 1; transform: translateX(0); }
     }
-    @keyframes fadeIn {
-      from { opacity: 0; } to { opacity: 1; }
-    }
 
-    .row.gold   { border-left-color: #c9a227; background: linear-gradient(to right, rgba(201,162,39,0.18), #2a3c3f); }
-    .row.silver { border-left-color: #aaaaaa; background: linear-gradient(to right, rgba(170,170,170,0.1), #2a3c3f); }
-    .row.bronze { border-left-color: #cc6622; background: linear-gradient(to right, rgba(204,102,34,0.1), #2a3c3f); }
+    .row.gold   { border-left-color: #c9a227; background: linear-gradient(to right, rgba(201,162,39,0.2), #2a3c3f 40%); }
+    .row.silver { border-left-color: #aaaaaa; background: linear-gradient(to right, rgba(170,170,170,0.12), #2a3c3f 40%); }
+    .row.bronze { border-left-color: #cc6622; background: linear-gradient(to right, rgba(204,102,34,0.12), #2a3c3f 40%); }
 
     .rank {
       font-family: 'Anton', sans-serif;
-      font-size: 2.2rem;
-      width: 80px;
+      font-size: 3rem;
+      width: 120px;
       text-align: center;
       flex-shrink: 0;
       color: #3a5558;
       letter-spacing: 0.05em;
     }
-    .gold   .rank { color: #c9a227; text-shadow: 0 0 20px rgba(201,162,39,0.5); }
+    .gold   .rank { color: #c9a227; text-shadow: 0 0 30px rgba(201,162,39,0.4); }
     .silver .rank { color: #aaaaaa; }
     .bronze .rank { color: #cc6622; }
 
     .name {
       flex: 1;
       font-family: 'Anton', sans-serif;
-      font-size: 2.1rem;
+      font-size: 3rem;
       letter-spacing: 0.04em;
-      padding: 0 24px;
+      padding: 0 40px;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
       color: #f0ece8;
     }
 
-    .score-wrap { text-align: right; flex-shrink: 0; }
+    .score-wrap {
+      text-align: right;
+      flex-shrink: 0;
+      display: flex;
+      align-items: baseline;
+      gap: 10px;
+    }
     .score {
       font-family: 'Anton', sans-serif;
-      font-size: 2.8rem;
+      font-size: 4rem;
       color: #c49a35;
       line-height: 1;
       letter-spacing: 0.05em;
     }
     .pts-label {
       font-family: 'Brother 1816 Printed', 'Anton', sans-serif;
-      font-size: 0.7rem;
-      font-weight: bold;
+      font-size: 1rem;
       color: #cc8085;
       text-transform: uppercase;
-      letter-spacing: 0.15em;
+      letter-spacing: 0.2em;
     }
 
     .empty {
@@ -174,71 +194,12 @@
       justify-content: center;
       font-family: 'Brother 1816 Printed', 'Anton', sans-serif;
       color: #a06030;
-      font-size: 1.5rem;
-      letter-spacing: 0.1em;
+      font-size: 2rem;
+      letter-spacing: 0.15em;
       text-transform: uppercase;
     }
 
-    /* Answers view */
-    .answers-board {
-      flex: 1;
-      padding: 16px 60px 30px;
-      display: none;
-      flex-direction: column;
-      gap: 10px;
-      overflow: hidden;
-      position: relative;
-      z-index: 1;
-    }
-    .answers-board.show { display: flex; }
-    .answer-row {
-      display: flex;
-      align-items: baseline;
-      gap: 20px;
-      padding: 16px 24px;
-      background: #2a3c3f;
-      border-radius: 3px;
-      border-left: 5px solid #1a2c2f;
-      animation: slideIn 0.35s ease;
-      box-shadow: 4px 4px 0 #1a2c2f;
-    }
-    .answer-row.has-answer { border-left-color: #cc8085; }
-    .answer-team {
-      font-family: 'Anton', sans-serif;
-      font-size: 1.3rem;
-      color: #cc8085;
-      letter-spacing: 0.05em;
-      flex-shrink: 0;
-      width: 220px;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-    .answer-text {
-      font-size: 1.2rem;
-      font-weight: 600;
-      color: #f0ece8;
-      line-height: 1.4;
-      flex: 1;
-    }
-    .answer-text.empty-answer { color: #3a5558; font-style: italic; font-weight: 400; }
-    .answer-text.hidden-answer {
-      font-family: 'Brother 1816 Printed', 'Anton', sans-serif;
-      color: #3a5558;
-      letter-spacing: 0.2em;
-      font-size: 1.4rem;
-      text-transform: uppercase;
-    }
-    .answer-img {
-      max-width: 260px;
-      max-height: 180px;
-      border-radius: 3px;
-      border: 2px solid #1a2c2f;
-      display: block;
-    }
-    .answer-row.drawing { align-items: center; }
-
-    /* Full-screen drawing highlight */
+    /* ── Highlight overlay (drawing or text answer) ── */
     .highlight-overlay {
       position: fixed;
       inset: 0;
@@ -248,33 +209,48 @@
       align-items: center;
       justify-content: center;
       z-index: 50;
-      padding: 40px 60px;
+      padding: 60px 120px;
+      gap: 40px;
     }
     .highlight-overlay.show { display: flex; }
+
     .highlight-team {
       font-family: 'Hello Imperfect', 'Anton', sans-serif;
-      font-size: 2.8rem;
+      font-size: 4rem;
       color: #fff;
-      text-shadow: none;
       letter-spacing: 0.08em;
       text-transform: uppercase;
-      margin-bottom: 28px;
     }
+
+    /* Drawing answer */
     .highlight-img {
-      max-width: 100%;
-      max-height: calc(100vh - 200px);
-      border-radius: 4px;
-      border: 4px solid #2a3c3f;
-      box-shadow: 8px 8px 0 #1a2c2f;
+      max-width: 1400px;
+      max-height: 750px;
+      border-radius: 6px;
+      border: 6px solid #2a3c3f;
+      box-shadow: 10px 10px 0 #1a2c2f;
       object-fit: contain;
+    }
+
+    /* Text answer */
+    .highlight-text {
+      font-family: 'Hello Imperfect', 'Anton', sans-serif;
+      font-size: 6rem;
+      color: #fff;
+      text-align: center;
+      line-height: 1.2;
+      letter-spacing: 0.06em;
+      max-width: 1600px;
+      word-break: break-word;
     }
   </style>
 </head>
 <body>
+
   <header>
     <h1>Slow Body</h1>
     <div class="header-sub">Anti-Trivia · Live Leaderboard</div>
-    <div class="header-divider"></div>
+    <div class="q-badge" id="qBadge"></div>
   </header>
 
   <div class="q-banner" id="qBanner">
@@ -286,11 +262,10 @@
     <div class="empty">Waiting for teams to join...</div>
   </div>
 
-  <div class="answers-board" id="answersBoard"></div>
-
   <div class="highlight-overlay" id="highlightOverlay">
     <div class="highlight-team" id="highlightTeamName"></div>
-    <img class="highlight-img" id="highlightImg" alt="drawing" />
+    <img class="highlight-img" id="highlightImg" alt="drawing" style="display:none" />
+    <div class="highlight-text" id="highlightText" style="display:none"></div>
   </div>
 
   <script src="/socket.io/socket.io.js"></script>
@@ -303,42 +278,21 @@
 
     socket.on('display:highlight', data => {
       const overlay = document.getElementById('highlightOverlay');
+      const img  = document.getElementById('highlightImg');
+      const txt  = document.getElementById('highlightText');
       if (data && data.answer) {
         document.getElementById('highlightTeamName').textContent = data.name;
-        document.getElementById('highlightImg').src = data.answer;
+        const isImage = data.answer.startsWith('data:image');
+        img.style.display  = isImage ? 'block' : 'none';
+        txt.style.display  = isImage ? 'none'  : 'block';
+        if (isImage) img.src = data.answer;
+        else         txt.textContent = data.answer;
         overlay.classList.add('show');
       } else {
         overlay.classList.remove('show');
+        img.src = '';
+        txt.textContent = '';
       }
-    });
-
-    socket.on('display:mode', mode => {
-      document.getElementById('board').style.display = mode === 'leaderboard' ? '' : 'none';
-      document.getElementById('answersBoard').classList.toggle('show', mode === 'answers');
-    });
-
-    socket.on('display:answers', ({ question, answers }) => {
-      const el = document.getElementById('answersBoard');
-      if (!answers.length) { el.innerHTML = ''; return; }
-      el.innerHTML = answers.map(a => {
-        const has = a.answer !== null && a.answer !== undefined && a.answer !== '';
-        const isImg = has && a.answer.startsWith('data:image');
-        let answerContent;
-        if (!has) {
-          answerContent = `<div class="answer-text empty-answer">no answer yet...</div>`;
-        } else if (!a.revealed) {
-          answerContent = `<div class="answer-text hidden-answer">???</div>`;
-        } else if (isImg) {
-          answerContent = `<img class="answer-img" src="${a.answer}" alt="drawing" />`;
-        } else {
-          answerContent = `<div class="answer-text">${esc(a.answer)}</div>`;
-        }
-        return `
-          <div class="answer-row ${a.revealed ? 'has-answer' : ''} ${isImg && a.revealed ? 'drawing' : ''}">
-            <div class="answer-team">${esc(a.name)}</div>
-            ${answerContent}
-          </div>`;
-      }).join('');
     });
 
     socket.on('leaderboard:update', teams => {
@@ -363,6 +317,9 @@
     });
 
     socket.on('question:new', q => {
+      const badge = document.getElementById('qBadge');
+      badge.textContent = `Q${q.number}`;
+      badge.classList.add('show');
       document.getElementById('qLabel').textContent = `Question ${q.number}`;
       document.getElementById('qText').textContent = q.text;
       document.getElementById('qBanner').classList.add('show');
@@ -370,6 +327,7 @@
 
     socket.on('question:clear', () => {
       document.getElementById('qBanner').classList.remove('show');
+      document.getElementById('qBadge').classList.remove('show');
     });
 
     function esc(s) {

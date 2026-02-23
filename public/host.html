@@ -437,14 +437,6 @@
       </div>
 
       <div class="panel">
-        <div class="panel-title">Big Screen Display</div>
-        <div class="display-toggle">
-          <button class="display-btn active" id="dispLeaderboard" onclick="setDisplay('leaderboard')">Leaderboard</button>
-          <button class="display-btn" id="dispAnswers" onclick="setDisplay('answers')">Answers</button>
-        </div>
-      </div>
-
-      <div class="panel">
         <div class="panel-title">Question History</div>
         <div class="history-list" id="historyList">
           <div class="no-history">No Questions Yet</div>
@@ -470,7 +462,6 @@
       teams: [],
       question: null,
       questionHistory: [],
-      displayMode: 'leaderboard',
       revealedAnswers: [],
       highlightedTeamName: null,
     };
@@ -513,7 +504,6 @@
       if (!confirm('Remove this team?')) return;
       socket.emit('host:remove-team', { teamId });
     }
-    function setDisplay(mode) { socket.emit('host:set-display', { mode }); }
     function toggleReveal(teamName) { socket.emit('host:reveal-answer', { teamName }); }
     function toggleHighlight(teamName) { socket.emit('host:highlight-team', { teamName }); }
 
@@ -534,9 +524,6 @@
         currentQ.classList.remove('show');
         noQMsg.style.display = '';
       }
-
-      document.getElementById('dispLeaderboard').classList.toggle('active', state.displayMode === 'leaderboard');
-      document.getElementById('dispAnswers').classList.toggle('active', state.displayMode === 'answers');
 
       const histEl = document.getElementById('historyList');
       if (state.questionHistory && state.questionHistory.length) {
@@ -588,7 +575,7 @@
         const revealBtn = (hasAnswer && !isImg)
           ? `<button class="btn-small btn-reveal ${isRevealed ? 'active' : ''}" data-name="${safeName}" onclick="toggleReveal(this.dataset.name)">${isRevealed ? 'Hide' : 'Reveal'}</button>`
           : '';
-        const highlightBtn = (hasAnswer && isImg)
+        const highlightBtn = hasAnswer
           ? `<button class="btn-small btn-highlight ${isHighlighted ? 'active' : ''}" data-name="${safeName}" onclick="toggleHighlight(this.dataset.name)">${isHighlighted ? 'Unhighlight' : 'Highlight'}</button>`
           : '';
 
