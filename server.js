@@ -79,6 +79,7 @@ io.on('connection', (socket) => {
     highlightedTeam = null;
     broadcastHighlight();
     for (const t of teams.values()) { t.answer = null; }
+    for (const t of disconnected.values()) { t.answer = null; }
     io.to('teams').emit('question:new', currentQuestion);
     broadcastHostState();
     broadcastLeaderboard();
@@ -165,9 +166,10 @@ io.on('connection', (socket) => {
     const saved = disconnected.get(trimmed.toLowerCase());
     if (saved) disconnected.delete(trimmed.toLowerCase());
 
-    teams.set(socket.id, { name: trimmed, score: saved ? saved.score : 0, answer: saved ? saved.answer : null });
+    const teamData = { name: trimmed, score: saved ? saved.score : 0, answer: saved ? saved.answer : null };
+    teams.set(socket.id, teamData);
     socket.join('teams');
-    socket.emit('join:success', { name: trimmed, question: currentQuestion });
+    socket.emit('join:success', { name: trimmed, question: currentQuestion, answer: teamData.answer });
     broadcastLeaderboard();
     broadcastHostState();
   });

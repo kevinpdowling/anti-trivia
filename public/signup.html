@@ -492,11 +492,23 @@
 
     socket.on('join:error', msg => { document.getElementById('joinErr').textContent = msg; });
 
-    socket.on('join:success', ({ name, question }) => {
+    socket.on('join:success', ({ name, question, answer }) => {
       myName = name; inGame = true;
       document.getElementById('bannerTeamName').textContent = name;
       document.getElementById('teamBanner').classList.add('show');
-      question ? showQuestion(question) : show('waiting');
+      if (answer) {
+        // Already submitted — restore the submitted screen so they don't lose their place
+        const isImg = typeof answer === 'string' && answer.startsWith('data:image');
+        document.getElementById('lockedDrawing').style.display = isImg ? 'block' : 'none';
+        document.getElementById('lockedAnswer').style.display  = isImg ? 'none'  : '';
+        if (isImg) document.getElementById('lockedDrawing').src = answer;
+        else       document.getElementById('lockedAnswer').textContent = `"${answer}"`;
+        show('submitted');
+      } else if (question) {
+        showQuestion(question);
+      } else {
+        show('waiting');
+      }
     });
 
     socket.on('question:new', q => { if (inGame) showQuestion(q); });
@@ -508,7 +520,12 @@
     });
 
     socket.on('disconnect', () => document.getElementById('connBar').classList.add('show'));
-    socket.on('connect',    () => document.getElementById('connBar').classList.remove('show'));
+    socket.on('connect', () => {
+      document.getElementById('connBar').classList.remove('show');
+      // Auto-rejoin after reconnect (e.g. phone screen lock/unlock).
+      // Server restores score and answer from its disconnected-teams cache.
+      if (inGame && myName) socket.emit('team:join', { name: myName });
+    });
 
     socket.on('game:reset', () => {
       myName = ''; inGame = false;
