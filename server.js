@@ -7,7 +7,15 @@ const app = express();
 const server = http.createServer(app);
 const io = new Server(server);
 
-app.use(express.static(path.join(__dirname, 'public')));
+// Serve static files, but disable caching for HTML so the browser
+// always fetches the latest version (important for the WebView2 plugin).
+app.use(express.static(path.join(__dirname, 'public'), {
+  setHeaders(res, filePath) {
+    if (filePath.endsWith('.html')) {
+      res.set('Cache-Control', 'no-store');
+    }
+  }
+}));
 
 // ── State ──────────────────────────────────────────────────────────────────
 const teams = new Map(); // socketId → { name, score, answer }
