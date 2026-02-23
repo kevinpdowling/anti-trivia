@@ -18,8 +18,7 @@ app.use(express.static(path.join(__dirname, 'public'), {
 }));
 
 // ── State ──────────────────────────────────────────────────────────────────
-const teams = new Map(); // socketId → { name, score, answer }
-const disconnected = new Map(); // name.toLowerCase() → { name, score, answer }
+const teams = new Map(); // nameLower → { name, score, answer, socketId: string|null }
 let currentQuestion = null; // { text, number } | null
 let questionCount = 0;
 const questionHistory = []; // all questions pushed so far
@@ -27,8 +26,17 @@ let displayMode = 'leaderboard'; // 'leaderboard' | 'answers'
 const revealedAnswers = new Set(); // team names whose answers are shown on big screen
 let highlightedTeam = null; // { name, answer } | null — drawing shown full screen
 
+function findTeamBySocketId(sid) {
+  for (const t of teams.values()) {
+    if (t.socketId === sid) return t;
+  }
+  return null;
+}
+
 function teamsList() {
-  return Array.from(teams.entries()).map(([id, t]) => ({ id, ...t }));
+  return Array.from(teams.values()).map(t => ({
+    id: t.name.toLowerCase(), name: t.name, score: t.score, answer: t.answer,
+  }));
 }
 
 function broadcastLeaderboard() {
@@ -79,7 +87,6 @@ io.on('connection', (socket) => {
     highlightedTeam = null;
     broadcastHighlight();
     for (const t of teams.values()) { t.answer = null; }
-    for (const t of disconnected.values()) { t.answer = null; }
     io.to('teams').emit('question:new', currentQuestion);
     broadcastHostState();
     broadcastLeaderboard();
@@ -133,7 +140,6 @@ io.on('connection', (socket) => {
 
   socket.on('host:reset-game', () => {
     teams.clear();
-    disconnected.clear();
     currentQuestion = null;
     questionCount = 0;
     questionHistory.length = 0;
@@ -159,15 +165,19 @@ io.on('connection', (socket) => {
     const trimmed = (name || '').trim();
     if (!trimmed) return socket.emit('join:error', 'Please enter a team name.');
     if (trimmed.length > 30) return socket.emit('join:error', 'Name too long (max 30 chars).');
-    const taken = Array.from(teams.values()).some(t => t.name.toLowerCase() === trimmed.toLowerCase());
-    if (taken) return socket.emit('join:error', 'That name is already taken!');
-
-    // Restore saved data if rejoining after a disconnect
-    const saved = disconnected.get(trimmed.toLowerCase());
-    if (saved) disconnected.delete(trimmed.toLowerCase());
-
-    const teamData = { name: trimmed, score: saved ? saved.score : 0, answer: saved ? saved.answer : null };
-    teams.set(socket.id, teamData);
+    const key = trimmed.toLowerCase();
+    const existing = teams.get(key);
+    // Name taken by a currently connected socket (not a reconnect)
+    if (existing && existing.socketId !== null) {
+      return socket.emit('join:error', 'That name is already taken!');
+    }
+    if (existing) {
+      // Rejoin after disconnect — reuse score and answer
+      existing.socketId = socket.id;
+    } else {
+      teams.set(key, { name: trimmed, score: 0, answer: null, socketId: socket.id });
+    }
+    const teamData = teams.get(key);
     socket.join('teams');
     socket.emit('join:success', { name: trimmed, question: currentQuestion, answer: teamData.answer });
     broadcastLeaderboard();
@@ -175,7 +185,7 @@ io.on('connection', (socket) => {
   });
 
   socket.on('team:submit', ({ answer }) => {
-    const t = teams.get(socket.id);
+    const t = findTeamBySocketId(socket.id);
     if (!t || !currentQuestion) return;
     t.answer = (answer || '').trim();
     socket.emit('submit:ack');
@@ -195,13 +205,9 @@ io.on('connection', (socket) => {
 
   // DISCONNECT
   socket.on('disconnect', () => {
-    if (teams.has(socket.id)) {
-      const t = teams.get(socket.id);
-      disconnected.set(t.name.toLowerCase(), { name: t.name, score: t.score, answer: t.answer });
-      teams.delete(socket.id);
-      broadcastLeaderboard();
-      broadcastHostState();
-    }
+    const t = findTeamBySocketId(socket.id);
+    if (t) t.socketId = null;
+    // No broadcast — team stays visible on leaderboard and host
   });
 });
 

@@ -544,20 +544,20 @@
             <div class="team-card-top">
               <div class="team-name-display">${esc(t.name)}</div>
               <div class="score-controls">
-                <button class="btn-icon btn-ghost" onclick="award('${safeId}', -1)">−</button>
+                <button class="btn-icon btn-ghost" data-id="${safeId}" onclick="award(this.dataset.id, -1)">−</button>
                 <div class="score-display">${t.score}</div>
-                <button class="btn-icon btn-ghost" onclick="award('${safeId}', 1)">+</button>
+                <button class="btn-icon btn-ghost" data-id="${safeId}" onclick="award(this.dataset.id, 1)">+</button>
               </div>
             </div>
             <div class="set-score-row">
-              <input class="set-score-input" type="number" placeholder="Set score…" id="si_${safeId}"
-                onkeydown="if(event.key==='Enter') setScore('${safeId}', this)" />
-              <button class="btn-small btn-ghost" onclick="setScore('${safeId}', document.getElementById('si_${safeId}'))">Set</button>
+              <input class="set-score-input" type="number" placeholder="Set score…" data-id="${safeId}"
+                onkeydown="if(event.key==='Enter') setScore(this.dataset.id, this)" />
+              <button class="btn-small btn-ghost" data-id="${safeId}" onclick="setScore(this.dataset.id, this.previousElementSibling)">Set</button>
             </div>
             ${answerContent}
             <div class="card-actions">
               ${highlightBtn}
-              <button class="btn-small btn-danger" style="margin-left:auto" onclick="removeTeam('${safeId}')">Remove</button>
+              <button class="btn-small btn-danger" style="margin-left:auto" data-id="${safeId}" onclick="removeTeam(this.dataset.id)">Remove</button>
             </div>
           </div>`;
       }).join('');
