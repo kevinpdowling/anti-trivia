@@ -21,8 +21,12 @@
     input, textarea, button, select { border-radius: 10px !important; }
 
     body {
-      background-color: #b8823c;
-      color: #f0ece8;
+      background-color: #c8b89a;
+      background-image: url('/images/paper.webp');
+      background-size: cover;
+      background-position: center;
+      background-attachment: fixed;
+      color: #1a1a1a;
       font-family: 'Poppins', 'Segoe UI', sans-serif;
       min-height: 100vh;
       padding: 20px;
@@ -33,9 +37,7 @@
       text-align: center;
       margin-bottom: 24px;
       padding: 28px 20px 24px;
-      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='60' height='60'%3E%3Cpath d='M30 8 C24 8 20 12 20 17 L20 22 C20 26 24 28 24 30 C24 32 20 34 20 38 L20 43 C20 48 24 52 30 52 C36 52 40 48 40 43 L40 38 C40 34 36 32 36 30 C36 28 40 26 40 22 L40 17 C40 12 36 8 30 8Z' fill='%23a06030' opacity='0.25'/%3E%3C/svg%3E");
-      background-size: 60px 60px;
-      border-bottom: 3px solid #1a2c2f;
+      border-bottom: 3px solid rgba(0,0,0,0.2);
     }
     .reset-btn {
       position: absolute;
@@ -43,24 +45,24 @@
       right: 20px;
       padding: 7px 14px;
       background: transparent;
-      border: 2px solid rgba(26,44,47,0.5);
+      border: 2px solid rgba(0,0,0,0.25);
       border-radius: 3px;
-      color: #2a3c3f;
+      color: rgba(0,0,0,0.55);
       font-family: 'Brother 1816 Printed', 'Anton', sans-serif;
       font-size: 0.68rem;
       font-weight: bold;
       cursor: pointer;
       text-transform: uppercase;
       letter-spacing: 0.12em;
-      opacity: 0.6;
+      opacity: 0.7;
       transition: opacity 0.15s, border-color 0.15s;
     }
-    .reset-btn:hover { opacity: 1; border-color: #1a2c2f; }
+    .reset-btn:hover { opacity: 1; border-color: rgba(0,0,0,0.5); }
 
     header h1 {
       font-family: 'Hello Imperfect', 'Anton', sans-serif;
       font-size: 3.2rem;
-      color: #fff;
+      color: #1a1a1a;
       text-shadow: none;
       letter-spacing: 0.06em;
       text-transform: uppercase;
@@ -70,13 +72,13 @@
       display: inline-block;
       font-family: 'Brother 1816 Printed', 'Anton', sans-serif;
       font-size: 0.72rem;
-      color: #f0ece8;
-      background: #2a3c3f;
+      color: #1a1a1a;
+      background: rgba(0,0,0,0.1);
       padding: 3px 14px;
       letter-spacing: 0.3em;
       text-transform: uppercase;
       margin-top: 8px;
-      box-shadow: 3px 3px 0 #1a2c2f;
+      box-shadow: 3px 3px 0 rgba(0,0,0,0.12);
     }
 
     /* ── Layout ── */
@@ -89,22 +91,22 @@
 
     /* ── Panels ── */
     .panel {
-      background: #2a3c3f;
-      border: 1px solid #1a2c2f;
+      background: rgba(0,0,0,0.07);
+      border: 1px solid rgba(0,0,0,0.15);
       border-radius: 4px;
       padding: 18px 20px;
       margin-bottom: 14px;
-      box-shadow: 4px 4px 0 #1a2c2f;
+      box-shadow: 4px 4px 0 rgba(0,0,0,0.1);
     }
     .panel-title {
       font-family: 'Brother 1816 Printed', 'Anton', sans-serif;
       font-size: 0.7rem;
-      color: #cc8085;
+      color: rgba(0,0,0,0.45);
       text-transform: uppercase;
       letter-spacing: 0.28em;
       margin-bottom: 14px;
       padding-bottom: 8px;
-      border-bottom: 1px solid #1a2c2f;
+      border-bottom: 1px solid rgba(0,0,0,0.15);
     }
 
     /* ── Question type toggle ── */
@@ -112,10 +114,10 @@
     .type-btn {
       flex: 1;
       padding: 8px;
-      border: 2px solid #1a2c2f;
+      border: 2px solid rgba(0,0,0,0.2);
       border-radius: 3px;
-      background: #1a2c2f;
-      color: #5a7070;
+      background: rgba(0,0,0,0.06);
+      color: rgba(0,0,0,0.4);
       font-family: 'Brother 1816 Printed', 'Anton', sans-serif;
       font-size: 0.78rem;
       cursor: pointer;
@@ -124,18 +126,18 @@
       transition: all 0.12s;
     }
     .type-btn.active {
-      background: #cc8085;
+      background: rgba(0,0,0,0.7);
       color: #fff;
-      border-color: #1a2c2f;
-      box-shadow: 3px 3px 0 #1a2c2f;
+      border-color: rgba(0,0,0,0.3);
+      box-shadow: 3px 3px 0 rgba(0,0,0,0.15);
     }
 
     textarea {
       width: 100%;
-      background: #1a2c2f;
-      border: 2px solid #0f1e20;
+      background: rgba(0,0,0,0.06);
+      border: 2px solid rgba(0,0,0,0.15);
       border-radius: 3px;
-      color: #f0ece8;
+      color: #1a1a1a;
       font-family: 'Poppins', sans-serif;
       font-size: 0.95rem;
       padding: 10px 12px;
@@ -143,8 +145,8 @@
       min-height: 72px;
       margin-bottom: 10px;
     }
-    textarea:focus { outline: none; border-color: #cc8085; }
-    textarea::placeholder { color: #3a5558; }
+    textarea:focus { outline: none; border-color: rgba(0,0,0,0.5); }
+    textarea::placeholder { color: rgba(0,0,0,0.35); }
 
     /* ── Buttons ── */
     .btn-row { display: flex; gap: 8px; }
@@ -163,43 +165,43 @@
     button:active { transform: translate(2px, 2px); }
 
     .btn-primary {
-      background: #cc8085;
+      background: rgba(0,0,0,0.75);
       color: #fff;
       flex: 1;
-      box-shadow: 4px 4px 0 #1a2c2f;
+      box-shadow: 4px 4px 0 rgba(0,0,0,0.2);
     }
-    .btn-primary:active { box-shadow: 2px 2px 0 #1a2c2f; }
+    .btn-primary:active { box-shadow: 2px 2px 0 rgba(0,0,0,0.2); }
 
     .btn-ghost {
       background: transparent;
-      border: 2px solid #1a2c2f;
-      color: #5a7070;
-      box-shadow: 3px 3px 0 #1a2c2f;
+      border: 2px solid rgba(0,0,0,0.2);
+      color: rgba(0,0,0,0.5);
+      box-shadow: 3px 3px 0 rgba(0,0,0,0.1);
     }
-    .btn-ghost:hover { color: #f0ece8; border-color: #cc8085; }
-    .btn-ghost:active { box-shadow: 1px 1px 0 #1a2c2f; }
+    .btn-ghost:hover { color: #1a1a1a; border-color: rgba(0,0,0,0.5); }
+    .btn-ghost:active { box-shadow: 1px 1px 0 rgba(0,0,0,0.1); }
 
     .btn-danger {
-      background: rgba(204,128,133,0.15);
-      color: #cc8085;
-      border: 2px solid rgba(204,128,133,0.35);
-      box-shadow: 3px 3px 0 #1a2c2f;
+      background: rgba(0,0,0,0.06);
+      color: rgba(0,0,0,0.55);
+      border: 2px solid rgba(0,0,0,0.2);
+      box-shadow: 3px 3px 0 rgba(0,0,0,0.1);
     }
-    .btn-danger:hover { background: rgba(204,128,133,0.25); }
-    .btn-danger:active { box-shadow: 1px 1px 0 #1a2c2f; }
+    .btn-danger:hover { background: rgba(0,0,0,0.12); }
+    .btn-danger:active { box-shadow: 1px 1px 0 rgba(0,0,0,0.1); }
 
     .btn-small { padding: 5px 10px; font-size: 0.7rem; }
     .btn-icon { padding: 5px 10px; font-size: 0.9rem; min-width: 34px; text-align: center; }
 
     /* ── Active question ── */
     .current-q {
-      background: rgba(204,128,133,0.1);
-      border: 2px solid rgba(204,128,133,0.3);
+      background: rgba(0,0,0,0.06);
+      border: 2px solid rgba(0,0,0,0.15);
       border-radius: 3px;
       padding: 12px 14px;
       font-size: 0.92rem;
       font-weight: 600;
-      color: #f0ece8;
+      color: #1a1a1a;
       line-height: 1.45;
       display: none;
     }
@@ -207,14 +209,14 @@
     .q-label {
       font-family: 'Brother 1816 Printed', 'Anton', sans-serif;
       font-size: 0.65rem;
-      color: #cc8085;
+      color: rgba(0,0,0,0.45);
       letter-spacing: 0.22em;
       text-transform: uppercase;
       margin-bottom: 5px;
     }
     .no-q-msg {
       font-family: 'Brother 1816 Printed', 'Anton', sans-serif;
-      color: #1a2c2f;
+      color: rgba(0,0,0,0.3);
       font-size: 0.85rem;
       letter-spacing: 0.12em;
       text-transform: uppercase;
@@ -230,17 +232,17 @@
     }
     .history-item {
       padding: 8px 12px;
-      background: #1a2c2f;
+      background: rgba(0,0,0,0.06);
       border-radius: 3px;
-      border-left: 3px solid #0f1e20;
+      border-left: 3px solid rgba(0,0,0,0.2);
       font-size: 0.82rem;
-      color: #7a9090;
+      color: rgba(0,0,0,0.55);
       line-height: 1.4;
     }
     .history-item .h-num {
       font-family: 'Brother 1816 Printed', 'Anton', sans-serif;
       font-size: 0.65rem;
-      color: #cc8085;
+      color: rgba(0,0,0,0.4);
       display: block;
       letter-spacing: 0.15em;
       text-transform: uppercase;
@@ -248,7 +250,7 @@
     }
     .no-history {
       font-family: 'Brother 1816 Printed', 'Anton', sans-serif;
-      color: #1a2c2f;
+      color: rgba(0,0,0,0.3);
       font-size: 0.8rem;
       letter-spacing: 0.12em;
       text-transform: uppercase;
@@ -259,7 +261,7 @@
     .team-count {
       font-family: 'Brother 1816 Printed', 'Anton', sans-serif;
       font-size: 0.72rem;
-      color: #2a3c3f;
+      color: rgba(0,0,0,0.5);
       text-transform: uppercase;
       letter-spacing: 0.2em;
     }
@@ -271,14 +273,14 @@
     }
 
     .team-card {
-      background: #2a3c3f;
-      border: 1px solid #1a2c2f;
+      background: rgba(0,0,0,0.07);
+      border: 1px solid rgba(0,0,0,0.15);
       border-radius: 4px;
       padding: 16px;
       display: flex;
       flex-direction: column;
       gap: 10px;
-      box-shadow: 4px 4px 0 #1a2c2f;
+      box-shadow: 4px 4px 0 rgba(0,0,0,0.1);
     }
 
     .team-card-top {
@@ -290,7 +292,7 @@
     .team-name-display {
       font-family: 'Anton', sans-serif;
       font-size: 1.2rem;
-      color: #f0ece8;
+      color: #1a1a1a;
       letter-spacing: 0.04em;
       line-height: 1.2;
       word-break: break-word;
@@ -300,7 +302,7 @@
     .score-display {
       font-family: 'Anton', sans-serif;
       font-size: 1.8rem;
-      color: #c49a35;
+      color: #1a1a1a;
       min-width: 46px;
       text-align: center;
       line-height: 1;
@@ -309,37 +311,37 @@
     .set-score-row { display: flex; gap: 6px; }
     .set-score-input {
       flex: 1;
-      background: #1a2c2f;
-      border: 2px solid #0f1e20;
+      background: rgba(0,0,0,0.06);
+      border: 2px solid rgba(0,0,0,0.15);
       border-radius: 3px;
-      color: #f0ece8;
+      color: #1a1a1a;
       font-family: 'Poppins', sans-serif;
       font-size: 0.85rem;
       padding: 5px 8px;
     }
-    .set-score-input:focus { outline: none; border-color: #cc8085; }
-    .set-score-input::placeholder { color: #3a5558; }
+    .set-score-input:focus { outline: none; border-color: rgba(0,0,0,0.5); }
+    .set-score-input::placeholder { color: rgba(0,0,0,0.35); }
 
     .answer-label {
       font-family: 'Brother 1816 Printed', 'Anton', sans-serif;
       font-size: 0.65rem;
-      color: #cc8085;
+      color: rgba(0,0,0,0.45);
       letter-spacing: 0.15em;
       text-transform: uppercase;
       margin-bottom: 4px;
     }
     .answer-preview {
-      background: #1a2c2f;
-      border: 1px solid #0f1e20;
+      background: rgba(0,0,0,0.05);
+      border: 1px solid rgba(0,0,0,0.12);
       border-radius: 3px;
       padding: 8px 10px;
       font-size: 0.85rem;
-      color: #3a5558;
+      color: rgba(0,0,0,0.35);
       font-style: italic;
       word-break: break-word;
       line-height: 1.4;
     }
-    .answer-preview.has-answer { color: #f0ece8; font-style: normal; }
+    .answer-preview.has-answer { color: #1a1a1a; font-style: normal; }
     .answer-preview img {
       max-width: 100%;
       max-height: 140px;
@@ -350,17 +352,17 @@
     .card-actions { display: flex; gap: 6px; flex-wrap: wrap; align-items: center; }
 
     .btn-highlight {
-      background: rgba(204,128,133,0.1);
-      color: #cc8085;
-      border: 2px solid rgba(204,128,133,0.28);
-      box-shadow: 3px 3px 0 #1a2c2f;
+      background: rgba(0,0,0,0.06);
+      color: rgba(0,0,0,0.55);
+      border: 2px solid rgba(0,0,0,0.2);
+      box-shadow: 3px 3px 0 rgba(0,0,0,0.1);
     }
-    .btn-highlight:hover { background: rgba(204,128,133,0.2); }
-    .btn-highlight.active { background: #cc8085; color: #fff; border-color: #1a2c2f; }
-    .btn-highlight:active { box-shadow: 1px 1px 0 #1a2c2f; }
+    .btn-highlight:hover { background: rgba(0,0,0,0.12); }
+    .btn-highlight.active { background: rgba(0,0,0,0.7); color: #fff; border-color: rgba(0,0,0,0.3); }
+    .btn-highlight:active { box-shadow: 1px 1px 0 rgba(0,0,0,0.1); }
 
     .empty-teams {
-      color: #3a5558;
+      color: rgba(0,0,0,0.3);
       font-family: 'Brother 1816 Printed', 'Anton', sans-serif;
       font-size: 1rem;
       letter-spacing: 0.1em;
