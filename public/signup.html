@@ -19,7 +19,8 @@
     }
 
     * { margin: 0; padding: 0; box-sizing: border-box; }
-    input, textarea, button, select { border-radius: 10px !important; }
+    input, button, select { border-radius: 100px !important; }
+    textarea { border-radius: 16px !important; }
     body {
       background-color: #c8b89a;
       background-image: url('/images/paper.webp');
@@ -41,9 +42,9 @@
       width: 100%;
       max-width: 480px;
       background: rgba(0,0,0,0.09);
-      border: 1px solid rgba(0,0,0,0.15);
-      border-bottom: 3px solid rgba(0,0,0,0.35);
-      border-radius: 3px 3px 0 0;
+      border: 1px solid #000;
+      border-bottom: 3px solid #000;
+      border-radius: 16px;
       padding: 10px 16px;
       align-items: center;
       justify-content: space-between;
@@ -51,7 +52,6 @@
       position: sticky;
       top: 0;
       z-index: 10;
-      box-shadow: 4px 4px 0 rgba(0,0,0,0.1);
     }
     .team-banner.show { display: flex; }
     .banner-brand {
@@ -85,7 +85,7 @@
     /* ── Branding ── */
     .slow-body {
       font-family: 'Hello Imperfect', 'Anton', sans-serif;
-      font-size: 3.2rem;
+      font-size: 4.5rem;
       color: #1a1a1a;
       text-shadow: none;
       letter-spacing: 0.06em;
@@ -99,30 +99,28 @@
       font-size: 0.85rem;
       color: #1a1a1a;
       background: rgba(0,0,0,0.1);
-      padding: 3px 12px;
+      padding: 3px 16px;
       letter-spacing: 0.25em;
       text-transform: uppercase;
       margin-bottom: 2rem;
       display: inline-block;
-      box-shadow: 3px 3px 0 rgba(0,0,0,0.12);
+      border-radius: 100px;
     }
 
     input[type=text], textarea {
       width: 100%;
       padding: 14px 16px;
       background: rgba(0,0,0,0.07);
-      border: 2px solid rgba(0,0,0,0.15);
-      border-radius: 3px;
+      border: 2px solid #000;
       color: #1a1a1a;
       font-size: 1.05rem;
       font-weight: 500;
       outline: none;
-      transition: border-color 0.2s, box-shadow 0.2s;
+      transition: border-color 0.2s;
       font-family: inherit;
     }
     input[type=text]:focus, textarea:focus {
-      border-color: rgba(0,0,0,0.5);
-      box-shadow: 0 0 0 3px rgba(0,0,0,0.08);
+      border-color: #000;
     }
     input[type=text]::placeholder, textarea::placeholder { color: rgba(0,0,0,0.35); }
     textarea { resize: none; height: 130px; }
@@ -132,33 +130,28 @@
       padding: 15px;
       margin-top: 14px;
       border: none;
-      border-radius: 3px;
       font-size: 1rem;
       font-weight: bold;
       cursor: pointer;
       font-family: 'Brother 1816 Printed', 'Anton', sans-serif;
       letter-spacing: 0.12em;
       text-transform: uppercase;
-      transition: box-shadow 0.08s, transform 0.08s;
+      transition: transform 0.08s;
     }
-    .btn:active { transform: translate(2px, 2px); }
+    .btn:active { transform: translate(1px, 1px); }
 
     .btn-primary {
       background: rgba(0,0,0,0.75);
       color: #fff;
-      box-shadow: 4px 4px 0 rgba(0,0,0,0.18);
     }
-    .btn-primary:active { box-shadow: 2px 2px 0 rgba(0,0,0,0.18); }
 
     .btn-outline {
       background: transparent;
       color: #1a1a1a;
-      border: 2px solid rgba(0,0,0,0.3);
+      border: 2px solid #000;
       font-family: 'Brother 1816 Printed', 'Anton', sans-serif;
-      box-shadow: 3px 3px 0 rgba(0,0,0,0.12);
     }
     .btn-outline:hover { background: rgba(0,0,0,0.07); }
-    .btn-outline:active { box-shadow: 1px 1px 0 rgba(0,0,0,0.12); }
 
     .err { color: rgba(0,0,0,0.7); font-size: 0.88rem; font-weight: 700; margin-top: 8px; min-height: 1.3em; text-align: center; font-family: 'Brother 1816 Printed', 'Anton', sans-serif; letter-spacing: 0.05em; text-transform: uppercase; }
 
@@ -195,15 +188,14 @@
     .q-box {
       width: 100%;
       background: rgba(0,0,0,0.07);
-      border-left: 5px solid rgba(0,0,0,0.4);
-      border-radius: 0 3px 3px 0;
+      border-left: 5px solid #000;
+      border-radius: 0 16px 16px 0;
       padding: 20px;
       font-size: 1.2rem;
       font-weight: 600;
       line-height: 1.55;
       margin-bottom: 1rem;
       color: #1a1a1a;
-      box-shadow: 4px 4px 0 rgba(0,0,0,0.1);
     }
 
     /* ── Drawing canvas ── */
@@ -228,8 +220,7 @@
     .eraser-btn {
       padding: 4px 10px;
       background: transparent;
-      border: 2px solid rgba(0,0,0,0.3);
-      border-radius: 3px;
+      border: 2px solid #000;
       color: rgba(0,0,0,0.6);
       font-size: 0.75rem;
       font-weight: 700;
@@ -242,13 +233,12 @@
 
     #drawCanvas {
       width: 100%;
-      border-radius: 3px;
+      border-radius: 16px;
       cursor: crosshair;
       touch-action: none;
       display: block;
       background: #fff;
-      border: 3px solid rgba(0,0,0,0.25);
-      box-shadow: 4px 4px 0 rgba(0,0,0,0.12);
+      border: 3px solid #000;
     }
 
     .draw-actions {
@@ -259,8 +249,7 @@
     .clear-btn {
       padding: 6px 14px;
       background: transparent;
-      border: 2px solid rgba(0,0,0,0.3);
-      border-radius: 3px;
+      border: 2px solid #000;
       color: rgba(0,0,0,0.6);
       font-size: 0.78rem;
       font-weight: 700;
@@ -296,8 +285,8 @@
     .locked-answer {
       width: 100%;
       background: rgba(0,0,0,0.07);
-      border: 1px solid rgba(0,0,0,0.15);
-      border-radius: 3px;
+      border: 1px solid #000;
+      border-radius: 16px;
       padding: 14px 16px;
       color: rgba(0,0,0,0.55);
       font-style: italic;
@@ -305,15 +294,13 @@
       margin-top: 1rem;
       word-break: break-word;
       line-height: 1.5;
-      box-shadow: 4px 4px 0 rgba(0,0,0,0.1);
     }
     .locked-drawing {
       width: 100%;
-      border-radius: 3px;
+      border-radius: 16px;
       margin-top: 1rem;
       display: none;
-      border: 3px solid rgba(0,0,0,0.25);
-      box-shadow: 4px 4px 0 rgba(0,0,0,0.12);
+      border: 3px solid #000;
     }
 
     .conn-bar {

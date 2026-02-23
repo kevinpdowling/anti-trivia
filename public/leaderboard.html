@@ -41,29 +41,17 @@
       flex-shrink: 0;
       text-align: center;
       padding: 36px 80px 28px;
-      border-bottom: 3px solid rgba(0,0,0,0.25);
+      border-bottom: 3px solid #000;
       position: relative;
     }
     header h1 {
       font-family: 'Hello Imperfect', 'Anton', sans-serif;
-      font-size: 7rem;
+      font-size: 10rem;
       color: #1a1a1a;
       text-shadow: none;
       letter-spacing: 0.06em;
       text-transform: uppercase;
       line-height: 1;
-    }
-    .header-sub {
-      display: inline-block;
-      font-family: 'Brother 1816 Printed', 'Anton', sans-serif;
-      font-size: 1.05rem;
-      color: #1a1a1a;
-      background: rgba(0,0,0,0.1);
-      padding: 5px 22px;
-      letter-spacing: 0.4em;
-      text-transform: uppercase;
-      margin-top: 12px;
-      box-shadow: 4px 4px 0 rgba(0,0,0,0.15);
     }
     .q-badge {
       position: absolute;
@@ -73,11 +61,11 @@
       font-size: 1.1rem;
       color: #1a1a1a;
       background: rgba(0,0,0,0.08);
-      border: 2px solid rgba(0,0,0,0.25);
+      border: 2px solid #000;
+      border-radius: 100px;
       padding: 8px 20px;
       letter-spacing: 0.2em;
       text-transform: uppercase;
-      box-shadow: 4px 4px 0 rgba(0,0,0,0.12);
       display: none;
     }
     .q-badge.show { display: block; }
@@ -88,11 +76,10 @@
       margin: 18px 80px 0;
       padding: 18px 36px;
       background: rgba(0,0,0,0.07);
-      border: 2px solid rgba(0,0,0,0.15);
-      border-left: 8px solid rgba(0,0,0,0.4);
-      border-radius: 0 4px 4px 0;
+      border: 2px solid #000;
+      border-left: 8px solid #000;
+      border-radius: 0 16px 16px 0;
       display: none;
-      box-shadow: 5px 5px 0 rgba(0,0,0,0.1);
     }
     .q-banner.show { display: block; }
     .q-banner .label {
@@ -125,9 +112,8 @@
       align-items: center;
       padding: 0 36px;
       background: rgba(0,0,0,0.07);
-      border-radius: 4px;
-      border-left: 8px solid rgba(0,0,0,0.3);
-      box-shadow: 5px 5px 0 rgba(0,0,0,0.1);
+      border-radius: 16px;
+      border-left: 8px solid #000;
       flex: 1;
       min-height: 0;
       animation: slideIn 0.35s ease;
@@ -137,9 +123,9 @@
       to   { opacity: 1; transform: translateX(0); }
     }
 
-    .row.gold   { border-left-color: rgba(0,0,0,0.55); background: rgba(0,0,0,0.1); }
-    .row.silver { border-left-color: rgba(0,0,0,0.4);  background: rgba(0,0,0,0.08); }
-    .row.bronze { border-left-color: rgba(0,0,0,0.32); background: rgba(0,0,0,0.07); }
+    .row.gold   { border-left-color: #000; background: rgba(0,0,0,0.1); }
+    .row.silver { border-left-color: #000; background: rgba(0,0,0,0.08); }
+    .row.bronze { border-left-color: #000; background: rgba(0,0,0,0.07); }
 
     .rank {
       font-family: 'Anton', sans-serif;
@@ -232,9 +218,8 @@
       min-height: 0;
       width: 100%;
       object-fit: contain;
-      border-radius: 6px;
-      border: 6px solid rgba(0,0,0,0.3);
-      box-shadow: 10px 10px 0 rgba(0,0,0,0.15);
+      border-radius: 16px;
+      border: 6px solid #000;
     }
 
     /* Text answer */
@@ -254,7 +239,6 @@
 
   <header>
     <h1>Slow Body</h1>
-    <div class="header-sub">Anti-Trivia · Live Leaderboard</div>
     <div class="q-badge" id="qBadge"></div>
   </header>
 
